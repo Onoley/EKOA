@@ -6,7 +6,7 @@ export default function AuthErrorPage() {
       <section className="card" aria-labelledby="auth-error-title">
         <p className="eyebrow">Connexion</p>
         <h1 id="auth-error-title" className="title">Ce lien n’est plus valide</h1>
-        <p className="body-copy">Demandez un nouveau lien de connexion pour continuer.</p>
+        <p className="body-copy">Recommencez la confirmation de votre adresse ou la réinitialisation de votre mot de passe.</p>
         <Link href="/" className="primary-button mt-6">Retour à la connexion</Link>
       </section>
     </main>

@@ -3,7 +3,9 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get("code");
-  const destination = new URL("/onboarding", request.url);
+  const next = request.nextUrl.searchParams.get("next");
+  const safeDestination = next === "/mot-de-passe/nouveau" ? next : "/onboarding";
+  const destination = new URL(safeDestination, request.url);
   if (!code) return NextResponse.redirect(new URL("/auth/erreur", request.url));
 
   const supabase = await createClient();
