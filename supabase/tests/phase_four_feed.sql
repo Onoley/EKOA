@@ -1,0 +1,10 @@
+begin;
+select plan(6);
+select has_table('public', 'feed_impressions', 'feed impressions exists');
+select has_table('public', 'interaction_events', 'interaction events exists');
+select has_function('public', 'record_feed_event', array['uuid','interaction_event_type','uuid','uuid','feed_type','smallint','smallint','uuid','timestamp with time zone','integer'], 'event function exists');
+select has_function('public', 'get_feed_candidates', array['uuid','feed_type','timestamp with time zone','integer'], 'candidate function exists');
+select col_is_pk('public', 'feed_impressions', 'id', 'impressions are idempotent');
+select col_is_pk('public', 'interaction_events', 'id', 'events are idempotent');
+select * from finish();
+rollback;

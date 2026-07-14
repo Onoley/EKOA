@@ -1,0 +1,3 @@
+export default function FeedLoading() {
+  return <main className="relative h-[calc(100dvh-4.75rem)] overflow-hidden bg-white" role="status"><div className="absolute inset-x-0 top-0 h-16 animate-pulse border-b border-[var(--border)] bg-[var(--background)]"/><div className="absolute inset-x-5 bottom-24 space-y-4"><div className="h-7 w-24 animate-pulse rounded-full bg-[var(--accent-soft)]"/><div className="h-20 w-4/5 animate-pulse rounded-xl bg-black/5"/><div className="h-14 animate-pulse rounded-xl bg-black/5"/><div className="h-14 animate-pulse rounded-xl bg-black/5"/></div><span className="sr-only">Chargement du fil…</span></main>;
+}

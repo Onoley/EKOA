@@ -1,0 +1,16 @@
+begin;
+select plan(10);
+select has_table('public','sponsor_organisations','sponsor organisations exist');
+select has_table('public','sponsor_campaigns','sponsor campaigns exist');
+select is((select relrowsecurity from pg_class where oid='public.sponsor_organisations'::regclass),true,'organisation RLS enabled');
+select is((select relrowsecurity from pg_class where oid='public.sponsor_campaigns'::regclass),true,'campaign RLS enabled');
+set local role authenticated;
+select throws_ok($$select * from public.sponsor_campaigns$$,'42501',null,'campaign rows are private');
+select throws_ok($$select public.admin_create_sponsor_organisation(gen_random_uuid(),'Test')$$,'P0001','verified_owner_required','ordinary caller cannot create sponsor');
+select throws_ok($$select * from public.get_sponsor_campaign_report(gen_random_uuid())$$,'P0001','not_authorized','foreign report denied');
+reset role;
+select has_function('public','get_active_sponsorships',array['uuid[]'],'public sponsor label projection exists');
+select has_function('public','get_owned_sponsor_campaigns',array[]::text[],'owned campaign projection exists');
+select has_function('public','get_sponsor_campaign_report',array['uuid'],'thresholded report exists');
+select * from finish();
+rollback;

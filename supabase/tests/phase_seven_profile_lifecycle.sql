@@ -1,0 +1,13 @@
+begin;
+select plan(9);
+select has_table('public','account_deletion_requests','deletion requests exists');
+select has_table('public','account_lifecycle_audit','lifecycle audit exists');
+select has_function('public','update_private_profile',array['smallint','text','professional_activity','gender_value'],'private settings function exists');
+select has_function('public','set_verified_account_follow',array['uuid','boolean'],'verified follow function exists');
+select has_function('public','get_public_profile',array['text'],'public profile function exists');
+select has_function('public','get_public_profile_questions',array['uuid'],'public profile questions function exists');
+select has_function('public','request_account_deletion',array['text'],'deletion request function exists');
+select has_function('public','anonymize_requested_account',array['uuid'],'anonymization function exists');
+select has_index('public','account_deletion_requests','account_deletion_requests_status_idx','deletion queue is indexed');
+select * from finish();
+rollback;

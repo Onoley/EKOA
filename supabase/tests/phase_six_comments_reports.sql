@@ -1,0 +1,12 @@
+begin;
+select plan(8);
+select has_table('public','comments','comments exists');
+select has_table('public','reports','reports exists');
+select has_function('public','create_comment',array['uuid','text'],'comment function exists');
+select has_function('public','get_question_comments',array['uuid','timestamp with time zone','uuid','integer'],'comment list function exists');
+select has_function('public','submit_report',array['report_target_type','uuid','report_reason','text'],'report function exists');
+select col_is_pk('public','comments','id','comment id is primary key');
+select has_index('public','reports','reports_active_question_key','question reports are idempotent');
+select has_index('public','reports','reports_active_comment_key','comment reports are idempotent');
+select * from finish();
+rollback;

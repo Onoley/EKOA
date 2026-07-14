@@ -1,0 +1,3 @@
+-- La taxonomie canonique v1 est installée par la migration
+-- 202607140001_editorial_reset_taxonomy.sql.
+-- Aucune question de démonstration ne doit être créée pendant cette phase.

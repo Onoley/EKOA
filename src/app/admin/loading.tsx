@@ -1,0 +1,1 @@
+export default function AdminLoading(){return <main className="p-5" role="status"><div className="h-10 w-64 animate-pulse rounded-xl bg-black/5"/><div className="mt-6 space-y-4"><div className="h-72 animate-pulse rounded-3xl bg-black/5"/><div className="h-72 animate-pulse rounded-3xl bg-black/5"/></div><span className="sr-only">Chargement de l’administration…</span></main>}

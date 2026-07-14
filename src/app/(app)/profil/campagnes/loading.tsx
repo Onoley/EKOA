@@ -1,0 +1,1 @@
+export default function Loading(){return <main className="p-5" aria-busy="true"><div className="h-9 w-64 animate-pulse rounded bg-black/10"/><div className="mt-6 h-48 animate-pulse rounded-3xl bg-black/10"/><span className="sr-only">Chargement des campagnes…</span></main>}

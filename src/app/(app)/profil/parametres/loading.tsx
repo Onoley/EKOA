@@ -1,0 +1,1 @@
+export default function SettingsLoading(){return <main className="p-5" role="status"><div className="h-10 w-52 animate-pulse rounded-xl bg-black/5"/><div className="mt-6 h-96 animate-pulse rounded-3xl bg-black/5"/><span className="sr-only">Chargement des paramètres…</span></main>}

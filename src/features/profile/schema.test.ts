@@ -1,0 +1,3 @@
+import{describe,expect,it}from"vitest";import{deletionConfirmationSchema,profileSettingsSchema}from"./schema";
+const valid={birthYear:1990,departmentCode:"2A",professionalActivity:"employee",gender:"prefer_not_to_say"};
+describe("paramètres du profil",()=>{it("accepte des données privées valides",()=>expect(profileSettingsSchema.safeParse(valid).success).toBe(true));it("refuse un mineur",()=>expect(profileSettingsSchema.safeParse({...valid,birthYear:new Date().getFullYear()-17}).success).toBe(false));it("exige une confirmation explicite",()=>{expect(deletionConfirmationSchema.safeParse("SUPPRIMER").success).toBe(true);expect(deletionConfirmationSchema.safeParse("supprimer").success).toBe(false)})});

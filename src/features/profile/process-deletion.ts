@@ -1,0 +1,2 @@
+import"server-only";import{createAdminClient}from"@/lib/supabase/admin";
+export async function processAccountDeletion(userId:string){const admin=createAdminClient();const{error}=await admin.rpc("anonymize_requested_account",{requested_user_id:userId});if(error)throw new Error("L’anonymisation applicative a échoué.");const{error:authError}=await admin.auth.admin.deleteUser(userId,true);if(authError)throw new Error("La suppression douce de l’identité Auth a échoué.")}

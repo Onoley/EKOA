@@ -1,0 +1,14 @@
+begin;
+select plan(10);
+select has_table('public','moderation_cases','moderation cases exists');
+select has_table('public','moderation_actions','moderation actions exists');
+select has_table('public','audit_log','audit log exists');
+select has_table('public','verified_profiles','verified profiles exists');
+select has_function('public','get_moderation_queue',array['report_status','integer'],'moderation queue exists');
+select has_function('public','moderate_report',array['uuid','moderation_action_type','text'],'moderation mutation exists');
+select has_function('public','admin_set_account_suspension',array['uuid','boolean','text'],'suspension mutation exists');
+select has_function('public','admin_set_verification',array['uuid','verification_status','text','text','text','text','text','text'],'verification mutation exists');
+select has_function('public','admin_set_forbidden_term',array['text','smallint','boolean'],'forbidden term mutation exists');
+select has_index('public','moderation_cases','moderation_cases_queue_idx','queue index exists');
+select * from finish();
+rollback;

@@ -1,0 +1,1 @@
+"use client";export default function AdminError({reset}:{error:Error;reset:()=>void}){return <main className="p-5"><div className="error-state" role="alert"><h1 className="text-xl font-bold">Administration indisponible</h1><p className="mt-2">Une erreur inattendue est survenue.</p><button className="primary-button mt-4" onClick={reset}>Réessayer</button></div></main>}

@@ -1,0 +1,15 @@
+begin;
+select plan(8);
+select has_table('public','rate_limit_buckets','rate limit buckets exist');
+select has_table('public','question_metrics_daily','daily metrics exist');
+select is((select relrowsecurity from pg_class where oid='public.rate_limit_buckets'::regclass),true,'rate limit RLS enabled');
+select is((select relrowsecurity from pg_class where oid='public.question_metrics_daily'::regclass),true,'metrics RLS enabled');
+set local role authenticated;
+select throws_ok($$select public.consume_rate_limit('vote',repeat('a',64),10,60)$$,'42501',null,'authenticated cannot rate limit');
+select throws_ok($$select public.run_operational_maintenance(90)$$,'42501',null,'authenticated cannot maintain');
+reset role;
+set local role service_role;
+select ok(public.consume_rate_limit('vote',repeat('b',64),1,60),'first request allowed');
+select is(public.consume_rate_limit('vote',repeat('b',64),1,60),false,'next request denied');
+select * from finish();
+rollback;

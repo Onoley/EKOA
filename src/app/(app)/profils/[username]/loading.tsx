@@ -1,0 +1,1 @@
+export default function PublicProfileLoading(){return <main className="p-5" role="status"><div className="h-48 animate-pulse rounded-3xl bg-black/5"/><div className="mt-6 h-64 animate-pulse rounded-3xl bg-black/5"/><span className="sr-only">Chargement du profil…</span></main>}
