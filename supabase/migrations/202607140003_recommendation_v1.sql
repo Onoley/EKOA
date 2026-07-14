@@ -183,7 +183,7 @@ begin
       or exists(select 1 from public.feed_reservations fr where fr.session_id=requested_session_id and fr.question_id=(item->>'questionId')::uuid) then continue;end if;
     insert into public.feed_reservations(session_id,user_id,question_id,position,source_pool,final_score,score_components,applied_constraints,relaxed_constraints,ranking_version,experiment_variant,expires_at)
     values(requested_session_id,requested_user_id,(item->>'questionId')::uuid,next_position,item->>'sourcePool',(item->>'finalScore')::numeric,item->'scoreComponents',item->'appliedConstraints',item->'relaxedConstraints',session_row.ranking_version,session_row.experiment_variant,now()+make_interval(mins=>requested_ttl_minutes))
-    on conflict(session_id,question_id) do nothing;
+    on conflict on constraint feed_reservations_session_id_question_id_key do nothing;
     if found then next_position:=next_position+1;end if;
   end loop;
   update public.feed_sessions set last_activity_at=now() where id=requested_session_id;
