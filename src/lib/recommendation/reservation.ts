@@ -6,7 +6,7 @@ import type { RerankedCandidate, SessionHistoryItem } from "./types";
 
 const pageRowSchema = z.object({
   question_id: z.uuid(),question_text:z.string(),author_id:z.uuid(),author_username:z.string().nullable(),author_verified:z.boolean(),category_id:z.uuid(),category_name:z.string(),published_at:z.iso.datetime({offset:true}),
-  options:z.array(z.object({id:z.uuid(),text:z.string()})).min(2).max(6),upvote_count:z.number().int().nonnegative(),initially_followed:z.boolean(),initially_upvoted:z.boolean(),sponsored_by:z.string().nullable(),position:z.number().int().nonnegative(),source_pool:z.string(),final_score:z.coerce.number(),score_components:z.record(z.string(),z.number()),ranking_version:z.string(),experiment_variant:z.string(),
+  options:z.array(z.object({id:z.uuid(),text:z.string()})).min(2).max(6),upvote_count:z.number().int().nonnegative(),initially_followed:z.boolean(),initially_upvoted:z.boolean(),sponsored_by:z.string().nullable(),reservation_position:z.number().int().nonnegative(),source_pool:z.string(),final_score:z.coerce.number(),score_components:z.record(z.string(),z.number()),ranking_version:z.string(),experiment_variant:z.string(),
 });
 
 export async function createFeedSession(db: SupabaseClient, input: { userId: string; feed: "for_you" | "following"; categorySlug?: string }) {

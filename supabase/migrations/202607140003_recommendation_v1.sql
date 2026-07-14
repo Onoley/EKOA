@@ -157,7 +157,7 @@ language sql stable security definer set search_path='' as $$
 $$;
 
 create function public.reserve_feed_items_v1(requested_user_id uuid,requested_session_id uuid,requested_items jsonb,requested_ttl_minutes integer default 30)
-returns table(question_id uuid,position integer)
+returns table(question_id uuid,reservation_position integer)
 language plpgsql security definer set search_path='' as $$
 declare session_row public.feed_sessions%rowtype;item jsonb;next_position integer;
 begin
@@ -194,7 +194,7 @@ create function public.get_feed_reservation_page_v1(requested_user_id uuid,reque
 returns table(
   question_id uuid,question_text text,author_id uuid,author_username text,author_verified boolean,
   category_id uuid,category_name text,published_at timestamptz,options jsonb,upvote_count integer,
-  initially_followed boolean,initially_upvoted boolean,sponsored_by text,position integer,
+  initially_followed boolean,initially_upvoted boolean,sponsored_by text,reservation_position integer,
   source_pool text,final_score numeric,score_components jsonb,ranking_version text,experiment_variant text
 )
 language sql stable security definer set search_path='' as $$
