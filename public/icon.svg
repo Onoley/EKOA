@@ -1,4 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#f3ff6d"/>
-  <path d="M128 124h264v72H216v24h152v68H216v28h180v72H128z" fill="#171810"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">Ekoa</title>
+  <desc id="description">Logo Ekoa souligné par les couleurs bleu, blanc et rouge.</desc>
+  <image href="ekoa-icon-512.png" width="512" height="512" preserveAspectRatio="xMidYMid meet"/>
 </svg>
