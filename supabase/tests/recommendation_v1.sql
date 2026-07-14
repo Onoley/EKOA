@@ -1,0 +1,15 @@
+begin;
+select plan(11);
+select has_table('public','feed_sessions','recommendation sessions exist');
+select has_table('public','feed_reservations','feed reservations exist');
+select has_table('public','user_question_controls','per-user controls exist');
+select has_function('public','get_recommendation_candidates_v1',array['uuid','feed_type','text','uuid','timestamp with time zone','integer'],'candidate pools RPC exists');
+select has_function('public','reserve_feed_items_v1',array['uuid','uuid','jsonb','integer'],'atomic reservation RPC exists');
+select has_function('public','get_feed_reservation_page_v1',array['uuid','uuid','integer','integer'],'stable page RPC exists');
+select has_index('public','feed_reservations','feed_reservations_session_position_idx','session pagination index exists');
+select has_index('public','feed_impressions','feed_impressions_user_question_shown_idx','novelty lookup index exists');
+select col_is_unique('public','feed_reservations',array['session_id','question_id'],'a question is unique in a session');
+select col_is_unique('public','feed_reservations',array['session_id','position'],'a position is unique in a session');
+select isnt_empty($$select 1 from pg_trigger where tgname='feed_impressions_attach_ranking'$$,'ranking decision attaches only to real impressions');
+select * from finish();
+rollback;

@@ -3,10 +3,9 @@ import { ALGORITHM_VERSION } from "./schema";
 
 const cursorSchema = z.object({
   version: z.literal(ALGORITHM_VERSION),
+  sessionId: z.uuid(),
   snapshot: z.iso.datetime(),
-  seen: z.array(z.uuid()).max(200),
-  recentAuthors: z.array(z.uuid()).max(2),
-  recentCategories: z.array(z.uuid()).max(2),
+  offset: z.number().int().min(0).max(10_000),
 });
 
 export type FeedCursor = z.infer<typeof cursorSchema>;

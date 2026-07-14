@@ -15,8 +15,12 @@ export async function GET(request: Request) {
   if (!env.CRON_SECRET) return NextResponse.json({ message: "Maintenance non configurée." }, { status: 503 });
   if (!secretMatches(request.headers.get("authorization"), env.CRON_SECRET)) return NextResponse.json({ message: "Accès refusé." }, { status: 401 });
   const started = Date.now();
-  const { data, error } = await createAdminClient().rpc("run_operational_maintenance", { requested_retention_days: env.ANALYTICS_RETENTION_DAYS });
-  if (error) {
+  const admin=createAdminClient();
+  const [{data,error},{error:recommendationError}]=await Promise.all([
+    admin.rpc("run_operational_maintenance", { requested_retention_days: env.ANALYTICS_RETENTION_DAYS }),
+    admin.rpc("cleanup_feed_recommendation_v1"),
+  ]);
+  if (error||recommendationError) {
     await sendOperationalAlert("maintenance.error", { code: "database_failure" });
     return NextResponse.json({ message: "Maintenance en échec." }, { status: 500 });
   }
