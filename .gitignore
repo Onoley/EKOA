@@ -44,6 +44,10 @@ yarn-error.log*
 # Local database backups (sensitive, never commit)
 /.backups/
 
+# Editorial imports and generated reports
+/imports/*.xlsx
+/reports/questions-import-*.json
+
 # vercel
 .vercel
 

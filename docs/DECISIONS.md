@@ -119,3 +119,11 @@ Univers, catégories, tags et recommandations vivent dans une source versionnée
 ## ADR-030 — Remise à zéro éditoriale sans identité
 
 La remise à zéro supprime les contenus et interactions dans une transaction avec assertions sur le nombre d’identités, profils et rôles. Auth, profils, vérifications et organisations restent hors du périmètre. Un dump contrôlé constitue le seul retour arrière après validation.
+
+## ADR-031 — Import éditorial idempotent et atomique par question
+
+`external_id` et un hash canonique distinguent répétition identique, conflit de contenu et doublon textuel. La validation complète précède toute écriture. Chaque question, sa série, ses options et ses tags sont insérés dans une fonction PostgreSQL atomique réservée au rôle serveur; un échec arrête les lots suivants et produit un rapport partiel.
+
+## ADR-032 — Format, temporalité et statut de ligne restent distincts
+
+La colonne Excel historique `editorial_type` alimente `question_format` (`opinion`, `projection`, `regulation`, `comportement`, `dilemme`). `editorial_type` conserve son sens de temporalité et vaut `evergreen` par défaut. Le statut de ligne `ready/review/rejected` est converti explicitement en `published/draft/ignoré`, sans étendre l’enum métier.

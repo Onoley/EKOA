@@ -7,7 +7,7 @@ describe("taxonomie canonique", () => {
     expect(() => validateCatalog()).not.toThrow();
     expect(universes).toHaveLength(7);
     expect(categories).toHaveLength(30);
-    expect(tags).toHaveLength(183);
+    expect(tags).toHaveLength(195);
   });
 
   it("associe chaque catégorie à des tags contrôlés", () => {

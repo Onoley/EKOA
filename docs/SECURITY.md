@@ -8,6 +8,7 @@
 - Actions administratives importantes auditées et immuables.
 - Les niveaux de sensibilité des tags décrivent le sujet éditorial; ils ne constituent jamais une donnée de profil ni une autorisation de ciblage.
 - Le catalogue contrôlé et les relations catégorie-tag sont validés en base. Un client ne peut pas créer un tag arbitraire.
+- L’import éditorial fonctionne exclusivement en CLI avec la clé `service_role` issue de l’environnement serveur. Sa fonction SQL refuse `anon` et `authenticated`; classeurs et rapports locaux sont exclus de Git.
 
 RLS est actif sur `profiles`, `categories` et `category_follows`. Un utilisateur lit uniquement son profil et ses propres suivis; il ne peut modifier directement ni démographie, ni rôle, ni statut. Les catégories actives sont disponibles pendant l’onboarding et pour les comptes actifs. Les changements de suivi exigent un compte actif et l’identité du propriétaire.
 

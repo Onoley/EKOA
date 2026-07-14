@@ -6,6 +6,8 @@ Les modules produit seront regroupés par fonctionnalité dans `src/features`. L
 
 La source éditoriale de taxonomie est `taxonomy/catalog.mjs`. La migration générée installe son schéma et ses données de référence; les commandes `taxonomy:seed` et `taxonomy:check` assurent respectivement une synchronisation idempotente et le contrôle des invariants.
 
+L’import de questions est un pipeline CLI sous `src/features/question-import`. Lecture Excel, validation pure, rapports et accès Supabase sont séparés. Une fonction SQL réservée au `service_role` assure l’atomicité d’une question avec sa série, ses options et ses tags. Aucune route publique n’expose l’importeur.
+
 L’autorisation applicative serveur et les politiques RLS formeront deux barrières indépendantes. Le client service-role restera limité aux modules `server-only` explicitement justifiés.
 
 La session Supabase repose sur des cookies SSR rafraîchis par `src/proxy.ts`. Les layouts protégés relisent les claims et le profil courant avant de distinguer compte actif, onboarding incomplet et compte indisponible. L’onboarding est validé par Zod, puis finalisé atomiquement par la fonction SQL `complete_onboarding`.

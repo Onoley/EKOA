@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-07-14T11:55:34.570Z",
+  "file": "/Users/honoreschlesser/Desktop/EKOA/imports/ekoa_questions.xlsx",
+  "questionsWritten": 0,
+  "tags": {
+    "created": 0,
+    "updated": 0,
+    "reactivated": 0,
+    "unchanged": 178
+  },
+  "associations": {
+    "uniqueUsedPairs": 522,
+    "created": 0
+  }
+}

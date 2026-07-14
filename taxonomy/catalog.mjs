@@ -72,7 +72,8 @@ climat ecologie pollution energie nucleaire biodiversite dechets consommation-re
 football formule-1 jeux-olympiques sport-feminin dopage cinema-francais streaming anime manga spoilers rap pop rock k-pop concerts livres bandes-dessinees musees jeux-en-ligne esport jeux-mobiles
 cuisine-maison restaurant livraison vegetarisme viande gaspillage-alimentaire produits-locaux voyage-solo voyage-couple expatriation tourisme avion chiens chats adoption elevage protection-animale chasse zoos
 intelligence-artificielle smartphone apple android vie-privee cybersecurite objets-connectes automatisation reseaux-sociaux influenceurs fake-news television journalisme algorithmes robotique espace genetique recherche-medicale
-voiture moto permis vitesse voiture-electrique transports-en-commun velo trottinette covoiturage stationnement`.split(/\s+/);
+voiture moto permis vitesse voiture-electrique transports-en-commun velo trottinette covoiturage stationnement
+cinema confiance echec economie sante-mentale sante-physique science-innovation series solidarite technologie travail vente`.split(/\s+/);
 
 const title = (slug)=>slug.split("-").map((part)=>part==="lgbtqia"?"LGBTQIA":part.charAt(0).toUpperCase()+part.slice(1)).join(" ");
 export const tags = tagSlugs.map((slug)=>({slug,name:title(slug),normalizedName:slug.replaceAll("-"," "),description:"",sensitivity:high.has(slug)?"high":medium.has(slug)?"medium":"low",isFeatured:false}));

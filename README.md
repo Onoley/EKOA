@@ -2,6 +2,8 @@
 
 La taxonomie canonique est documentée dans `docs/TAXONOMY.md`. Utilisez `pnpm taxonomy:seed` pour la synchroniser sans doublon et `pnpm taxonomy:check` pour contrôler 7 univers, 30 catégories, le catalogue de tags et l’absence de données éditoriales orphelines. Aucune question de démonstration n’est créée.
 
+L’import éditorial Excel est documenté dans `docs/QUESTION_IMPORT.md`. Toujours commencer par `pnpm questions:import --dry-run --file imports/ekoa_questions.xlsx`.
+
 Application web mobile-first de questions communautaires. Promesse produit : « Répondez. Comparez. Comprenez. » Les résultats Ekoa décriront sa communauté et ne seront jamais présentés comme des sondages représentatifs.
 
 ## Prérequis

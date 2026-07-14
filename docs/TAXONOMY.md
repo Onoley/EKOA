@@ -2,7 +2,7 @@
 
 La remise à zéro éditoriale du 14 juillet 2026 conserve Auth, profils, rôles, vérifications et organisations. Elle retire les anciennes questions, réponses, interactions, campagnes éditoriales, catégories et tags. Aucune question n’est importée par cette phase.
 
-La source de vérité versionnée est `taxonomy/catalog.mjs`. Elle définit 7 univers, 30 catégories, 183 tags contrôlés et leurs associations. Les identifiants UUID sont dérivés de manière déterministe des slugs.
+La source de vérité versionnée est `taxonomy/catalog.mjs`. Elle définit 7 univers, 30 catégories, 195 tags contrôlés et leurs associations initiales. Les identifiants UUID sont dérivés de manière déterministe des slugs. Les couples additionnels issus d’un classeur éditorial contrôlé sont synchronisés sans retirer les associations existantes.
 
 ## Univers
 

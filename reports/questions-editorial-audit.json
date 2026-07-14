@@ -1,0 +1,1177 @@
+{
+  "generatedAt": "2026-07-14T11:56:38.586Z",
+  "file": "/Users/honoreschlesser/Desktop/EKOA/imports/ekoa_questions.xlsx",
+  "writePerformed": false,
+  "workbook": {
+    "sheets": [
+      "Résumé",
+      "Questions",
+      "Categories",
+      "Universes",
+      "Tags",
+      "Instructions"
+    ],
+    "headers": [
+      "external_id",
+      "universe_slug",
+      "category_slug",
+      "question",
+      "option_1",
+      "option_2",
+      "option_3",
+      "option_4",
+      "option_5",
+      "option_6",
+      "tag_1",
+      "tag_2",
+      "tag_3",
+      "minimum_age",
+      "maximum_age",
+      "sensitivity",
+      "editorial_type",
+      "publication_priority",
+      "status",
+      "editorial_note"
+    ]
+  },
+  "totals": {
+    "questions": 1500,
+    "valid": 1500,
+    "invalid": 0,
+    "warnings": 0,
+    "blockingErrors": 0
+  },
+  "distributions": {
+    "universes": {
+      "relations-identite-personnelle": 300,
+      "societe-politique-monde": 300,
+      "culture-divertissement": 250,
+      "travail-argent-vie-materielle": 250,
+      "mode-vie-passions": 200,
+      "technologies-medias-innovation": 150,
+      "mobilite-deplacements": 50
+    },
+    "categories": {
+      "actualite-societe": 50,
+      "animaux": 50,
+      "argent-economie-pouvoir-achat": 50,
+      "automobile-transports-mobilite": 50,
+      "cinema-series-anime": 50,
+      "consommation-vie-quotidienne": 50,
+      "cuisine-alimentation": 50,
+      "droit-justice-securite": 50,
+      "entrepreneuriat-business": 50,
+      "environnement-climat": 50,
+      "famille-parentalite-amitie": 50,
+      "jeux-video": 50,
+      "livres-bd-culture": 50,
+      "logement-maison-immobilier": 50,
+      "loisirs-passions-creativite": 50,
+      "medias-reseaux-sociaux-information": 50,
+      "mode-beaute-apparence": 50,
+      "monde-geopolitique": 50,
+      "musique": 50,
+      "politique-citoyennete": 50,
+      "relations-amour-sexualite": 50,
+      "sante-mentale-bien-etre": 50,
+      "sante-physique": 50,
+      "science-innovation": 50,
+      "spiritualite-religion-philosophie": 50,
+      "sport": 50,
+      "technologie-internet-intelligence-artificielle": 50,
+      "territoire-ville-vie-locale": 50,
+      "travail-emploi-etudes": 50,
+      "voyage-decouverte": 50
+    },
+    "optionCounts": {
+      "4": 1500
+    },
+    "sensitivities": {
+      "high": 565,
+      "medium": 530,
+      "low": 405
+    },
+    "editorialTypes": {
+      "comportement": 300,
+      "dilemme": 300,
+      "opinion": 300,
+      "projection": 300,
+      "regulation": 300
+    },
+    "priorities": {
+      "3": 55,
+      "4": 410,
+      "5": 1035
+    },
+    "tags": {
+      "confiance-en-soi": 145,
+      "services-publics": 135,
+      "pouvoir-achat": 125,
+      "vie-locale": 95,
+      "education": 85,
+      "inegalites": 85,
+      "publicite": 85,
+      "achats-en-ligne": 80,
+      "consommation-responsable": 80,
+      "reseaux-sociaux": 80,
+      "vie-privee": 80,
+      "democratie": 75,
+      "famille": 70,
+      "climat": 65,
+      "justice": 65,
+      "smartphone": 65,
+      "discrimination": 60,
+      "liberte-expression": 60,
+      "equilibre-vie-travail": 55,
+      "reussite": 55,
+      "streaming": 55,
+      "tourisme": 55,
+      "violences": 55,
+      "journalisme": 50,
+      "couple": 45,
+      "fake-news": 45,
+      "grande-ville": 45,
+      "jeunes-adultes": 45,
+      "securite": 45,
+      "algorithmes": 40,
+      "amitie": 40,
+      "creation-entreprise": 40,
+      "harcelement": 40,
+      "livres": 40,
+      "medecins": 40,
+      "pardon": 40,
+      "prevention": 40,
+      "solitude": 40,
+      "ecrans": 35,
+      "impots": 35,
+      "jeux-en-ligne": 35,
+      "mondialisation": 35,
+      "parents": 35,
+      "protection-animale": 35,
+      "salaire": 35,
+      "sport-sante": 35,
+      "dechets": 30,
+      "intelligence-artificielle": 30,
+      "patrimoine": 30,
+      "produits-locaux": 30,
+      "recherche-medicale": 30,
+      "richesse": 30,
+      "seniors": 30,
+      "transports-en-commun": 30,
+      "abonnements": 25,
+      "achat-immobilier": 25,
+      "addiction": 25,
+      "cinema-francais": 25,
+      "concerts": 25,
+      "credit": 25,
+      "cybersecurite": 25,
+      "deuil": 25,
+      "ecologie": 25,
+      "guerre": 25,
+      "logement-social": 25,
+      "maladie": 25,
+      "management": 25,
+      "prise-de-risque": 25,
+      "recrutement": 25,
+      "sante-mentale": 25,
+      "seconde-main": 25,
+      "therapie": 25,
+      "voiture": 25,
+      "biodiversite": 20,
+      "elevage": 20,
+      "location": 20,
+      "salaries": 20,
+      "science-innovation": 20,
+      "vote": 20,
+      "agriculture": 15,
+      "alimentation": 15,
+      "anime": 15,
+      "anxiete": 15,
+      "avion": 15,
+      "chats": 15,
+      "chiens": 15,
+      "divorce": 15,
+      "epargne": 15,
+      "espace": 15,
+      "femmes": 15,
+      "football": 15,
+      "genetique": 15,
+      "independants": 15,
+      "investissement": 15,
+      "livraison": 15,
+      "musees": 15,
+      "police": 15,
+      "pop": 15,
+      "reconversion": 15,
+      "restaurant": 15,
+      "ruralite": 15,
+      "sante-physique": 15,
+      "stress": 15,
+      "technologie": 15,
+      "television": 15,
+      "union-europeenne": 15,
+      "vente": 15,
+      "viande": 15,
+      "voisinage": 15,
+      "abstention": 10,
+      "adoption": 10,
+      "aidants": 10,
+      "amour": 10,
+      "automatisation": 10,
+      "celibataires": 10,
+      "charge-mentale": 10,
+      "commerces-proximite": 10,
+      "consentement": 10,
+      "covoiturage": 10,
+      "cuisine-maison": 10,
+      "desir-enfant": 10,
+      "diplome": 10,
+      "energie": 10,
+      "handicap": 10,
+      "immigration": 10,
+      "inflation": 10,
+      "jeux-mobiles": 10,
+      "nucleaire": 10,
+      "orientation": 10,
+      "permis": 10,
+      "prison": 10,
+      "rap": 10,
+      "rencontre": 10,
+      "robotique": 10,
+      "spoilers": 10,
+      "stationnement": 10,
+      "teletravail": 10,
+      "vegetarisme": 10,
+      "bandes-dessinees": 5,
+      "chasse": 5,
+      "chomage": 5,
+      "cinema": 5,
+      "colocation": 5,
+      "confiance": 5,
+      "depression": 5,
+      "dopage": 5,
+      "echec": 5,
+      "economie": 5,
+      "esport": 5,
+      "etudiants": 5,
+      "expatriation": 5,
+      "gaspillage-alimentaire": 5,
+      "hommes": 5,
+      "hopital": 5,
+      "infidelite": 5,
+      "influenceurs": 5,
+      "jalousie": 5,
+      "jeux-olympiques": 5,
+      "lgbtqia-plus": 5,
+      "manga": 5,
+      "mariage": 5,
+      "promotions": 5,
+      "renovation": 5,
+      "retraite": 5,
+      "rock": 5,
+      "series": 5,
+      "sexualite": 5,
+      "solidarite": 5,
+      "sommeil": 5,
+      "sport-feminin": 5,
+      "travail": 5,
+      "vaccination": 5,
+      "velo": 5,
+      "vitesse": 5,
+      "voiture-electrique": 5,
+      "voyage-couple": 5,
+      "voyage-solo": 5,
+      "zoos": 5
+    }
+  },
+  "taxonomy": {
+    "knownUniverses": 7,
+    "knownCategories": 30,
+    "knownTags": 195,
+    "underrepresentedCategories": [],
+    "overusedTags": [],
+    "sensitivityMismatches": [
+      {
+        "row": 12,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 12,
+        "declared": "low",
+        "tag": "seniors",
+        "required": "medium"
+      },
+      {
+        "row": 13,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 13,
+        "declared": "low",
+        "tag": "seniors",
+        "required": "medium"
+      },
+      {
+        "row": 14,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 14,
+        "declared": "low",
+        "tag": "seniors",
+        "required": "medium"
+      },
+      {
+        "row": 15,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 15,
+        "declared": "low",
+        "tag": "seniors",
+        "required": "medium"
+      },
+      {
+        "row": 16,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 16,
+        "declared": "low",
+        "tag": "seniors",
+        "required": "medium"
+      },
+      {
+        "row": 32,
+        "declared": "medium",
+        "tag": "violences",
+        "required": "high"
+      },
+      {
+        "row": 33,
+        "declared": "medium",
+        "tag": "violences",
+        "required": "high"
+      },
+      {
+        "row": 34,
+        "declared": "medium",
+        "tag": "violences",
+        "required": "high"
+      },
+      {
+        "row": 35,
+        "declared": "medium",
+        "tag": "violences",
+        "required": "high"
+      },
+      {
+        "row": 36,
+        "declared": "medium",
+        "tag": "violences",
+        "required": "high"
+      },
+      {
+        "row": 47,
+        "declared": "low",
+        "tag": "securite",
+        "required": "medium"
+      },
+      {
+        "row": 48,
+        "declared": "low",
+        "tag": "securite",
+        "required": "medium"
+      },
+      {
+        "row": 49,
+        "declared": "low",
+        "tag": "securite",
+        "required": "medium"
+      },
+      {
+        "row": 50,
+        "declared": "low",
+        "tag": "securite",
+        "required": "medium"
+      },
+      {
+        "row": 51,
+        "declared": "low",
+        "tag": "securite",
+        "required": "medium"
+      },
+      {
+        "row": 322,
+        "declared": "low",
+        "tag": "salaire",
+        "required": "medium"
+      },
+      {
+        "row": 323,
+        "declared": "low",
+        "tag": "salaire",
+        "required": "medium"
+      },
+      {
+        "row": 324,
+        "declared": "low",
+        "tag": "salaire",
+        "required": "medium"
+      },
+      {
+        "row": 325,
+        "declared": "low",
+        "tag": "salaire",
+        "required": "medium"
+      },
+      {
+        "row": 326,
+        "declared": "low",
+        "tag": "salaire",
+        "required": "medium"
+      },
+      {
+        "row": 407,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 408,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 409,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 410,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 411,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 457,
+        "declared": "low",
+        "tag": "fake-news",
+        "required": "medium"
+      },
+      {
+        "row": 458,
+        "declared": "low",
+        "tag": "fake-news",
+        "required": "medium"
+      },
+      {
+        "row": 459,
+        "declared": "low",
+        "tag": "fake-news",
+        "required": "medium"
+      },
+      {
+        "row": 460,
+        "declared": "low",
+        "tag": "fake-news",
+        "required": "medium"
+      },
+      {
+        "row": 461,
+        "declared": "low",
+        "tag": "fake-news",
+        "required": "medium"
+      },
+      {
+        "row": 502,
+        "declared": "low",
+        "tag": "credit",
+        "required": "medium"
+      },
+      {
+        "row": 503,
+        "declared": "low",
+        "tag": "credit",
+        "required": "medium"
+      },
+      {
+        "row": 504,
+        "declared": "low",
+        "tag": "credit",
+        "required": "medium"
+      },
+      {
+        "row": 505,
+        "declared": "low",
+        "tag": "credit",
+        "required": "medium"
+      },
+      {
+        "row": 506,
+        "declared": "low",
+        "tag": "credit",
+        "required": "medium"
+      },
+      {
+        "row": 757,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 758,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 759,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 760,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 761,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 772,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 773,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 774,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 775,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 776,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 792,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 793,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 794,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 795,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 796,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 852,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 853,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 854,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 855,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 856,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 897,
+        "declared": "low",
+        "tag": "justice",
+        "required": "medium"
+      },
+      {
+        "row": 898,
+        "declared": "low",
+        "tag": "justice",
+        "required": "medium"
+      },
+      {
+        "row": 899,
+        "declared": "low",
+        "tag": "justice",
+        "required": "medium"
+      },
+      {
+        "row": 900,
+        "declared": "low",
+        "tag": "justice",
+        "required": "medium"
+      },
+      {
+        "row": 901,
+        "declared": "low",
+        "tag": "justice",
+        "required": "medium"
+      },
+      {
+        "row": 947,
+        "declared": "medium",
+        "tag": "addiction",
+        "required": "high"
+      },
+      {
+        "row": 948,
+        "declared": "medium",
+        "tag": "addiction",
+        "required": "high"
+      },
+      {
+        "row": 949,
+        "declared": "medium",
+        "tag": "addiction",
+        "required": "high"
+      },
+      {
+        "row": 950,
+        "declared": "medium",
+        "tag": "addiction",
+        "required": "high"
+      },
+      {
+        "row": 951,
+        "declared": "medium",
+        "tag": "addiction",
+        "required": "high"
+      },
+      {
+        "row": 977,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 977,
+        "declared": "low",
+        "tag": "seniors",
+        "required": "medium"
+      },
+      {
+        "row": 978,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 978,
+        "declared": "low",
+        "tag": "seniors",
+        "required": "medium"
+      },
+      {
+        "row": 979,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 979,
+        "declared": "low",
+        "tag": "seniors",
+        "required": "medium"
+      },
+      {
+        "row": 980,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 980,
+        "declared": "low",
+        "tag": "seniors",
+        "required": "medium"
+      },
+      {
+        "row": 981,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 981,
+        "declared": "low",
+        "tag": "seniors",
+        "required": "medium"
+      },
+      {
+        "row": 997,
+        "declared": "low",
+        "tag": "stress",
+        "required": "medium"
+      },
+      {
+        "row": 998,
+        "declared": "low",
+        "tag": "stress",
+        "required": "medium"
+      },
+      {
+        "row": 999,
+        "declared": "low",
+        "tag": "stress",
+        "required": "medium"
+      },
+      {
+        "row": 1000,
+        "declared": "low",
+        "tag": "stress",
+        "required": "medium"
+      },
+      {
+        "row": 1001,
+        "declared": "low",
+        "tag": "stress",
+        "required": "medium"
+      },
+      {
+        "row": 1012,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 1013,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 1014,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 1015,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 1016,
+        "declared": "low",
+        "tag": "jeunes-adultes",
+        "required": "medium"
+      },
+      {
+        "row": 1077,
+        "declared": "low",
+        "tag": "vie-privee",
+        "required": "medium"
+      },
+      {
+        "row": 1078,
+        "declared": "low",
+        "tag": "vie-privee",
+        "required": "medium"
+      },
+      {
+        "row": 1079,
+        "declared": "low",
+        "tag": "vie-privee",
+        "required": "medium"
+      },
+      {
+        "row": 1080,
+        "declared": "low",
+        "tag": "vie-privee",
+        "required": "medium"
+      },
+      {
+        "row": 1081,
+        "declared": "low",
+        "tag": "vie-privee",
+        "required": "medium"
+      },
+      {
+        "row": 1087,
+        "declared": "medium",
+        "tag": "handicap",
+        "required": "high"
+      },
+      {
+        "row": 1088,
+        "declared": "medium",
+        "tag": "handicap",
+        "required": "high"
+      },
+      {
+        "row": 1089,
+        "declared": "medium",
+        "tag": "handicap",
+        "required": "high"
+      },
+      {
+        "row": 1090,
+        "declared": "medium",
+        "tag": "handicap",
+        "required": "high"
+      },
+      {
+        "row": 1091,
+        "declared": "medium",
+        "tag": "handicap",
+        "required": "high"
+      },
+      {
+        "row": 1122,
+        "declared": "low",
+        "tag": "fake-news",
+        "required": "medium"
+      },
+      {
+        "row": 1123,
+        "declared": "low",
+        "tag": "fake-news",
+        "required": "medium"
+      },
+      {
+        "row": 1124,
+        "declared": "low",
+        "tag": "fake-news",
+        "required": "medium"
+      },
+      {
+        "row": 1125,
+        "declared": "low",
+        "tag": "fake-news",
+        "required": "medium"
+      },
+      {
+        "row": 1126,
+        "declared": "low",
+        "tag": "fake-news",
+        "required": "medium"
+      },
+      {
+        "row": 1192,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 1193,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 1194,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 1195,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 1196,
+        "declared": "medium",
+        "tag": "discrimination",
+        "required": "high"
+      },
+      {
+        "row": 1272,
+        "declared": "medium",
+        "tag": "addiction",
+        "required": "high"
+      },
+      {
+        "row": 1273,
+        "declared": "medium",
+        "tag": "addiction",
+        "required": "high"
+      },
+      {
+        "row": 1274,
+        "declared": "medium",
+        "tag": "addiction",
+        "required": "high"
+      },
+      {
+        "row": 1275,
+        "declared": "medium",
+        "tag": "addiction",
+        "required": "high"
+      },
+      {
+        "row": 1276,
+        "declared": "medium",
+        "tag": "addiction",
+        "required": "high"
+      },
+      {
+        "row": 1362,
+        "declared": "medium",
+        "tag": "anxiete",
+        "required": "high"
+      },
+      {
+        "row": 1363,
+        "declared": "medium",
+        "tag": "anxiete",
+        "required": "high"
+      },
+      {
+        "row": 1364,
+        "declared": "medium",
+        "tag": "anxiete",
+        "required": "high"
+      },
+      {
+        "row": 1365,
+        "declared": "medium",
+        "tag": "anxiete",
+        "required": "high"
+      },
+      {
+        "row": 1366,
+        "declared": "medium",
+        "tag": "anxiete",
+        "required": "high"
+      },
+      {
+        "row": 1432,
+        "declared": "medium",
+        "tag": "recherche-medicale",
+        "required": "high"
+      },
+      {
+        "row": 1433,
+        "declared": "medium",
+        "tag": "recherche-medicale",
+        "required": "high"
+      },
+      {
+        "row": 1434,
+        "declared": "medium",
+        "tag": "recherche-medicale",
+        "required": "high"
+      },
+      {
+        "row": 1435,
+        "declared": "medium",
+        "tag": "recherche-medicale",
+        "required": "high"
+      },
+      {
+        "row": 1436,
+        "declared": "medium",
+        "tag": "recherche-medicale",
+        "required": "high"
+      },
+      {
+        "row": 1437,
+        "declared": "medium",
+        "tag": "recherche-medicale",
+        "required": "high"
+      },
+      {
+        "row": 1438,
+        "declared": "medium",
+        "tag": "recherche-medicale",
+        "required": "high"
+      },
+      {
+        "row": 1439,
+        "declared": "medium",
+        "tag": "recherche-medicale",
+        "required": "high"
+      },
+      {
+        "row": 1440,
+        "declared": "medium",
+        "tag": "recherche-medicale",
+        "required": "high"
+      },
+      {
+        "row": 1441,
+        "declared": "medium",
+        "tag": "recherche-medicale",
+        "required": "high"
+      },
+      {
+        "row": 1442,
+        "declared": "medium",
+        "tag": "recherche-medicale",
+        "required": "high"
+      },
+      {
+        "row": 1443,
+        "declared": "medium",
+        "tag": "recherche-medicale",
+        "required": "high"
+      },
+      {
+        "row": 1444,
+        "declared": "medium",
+        "tag": "recherche-medicale",
+        "required": "high"
+      },
+      {
+        "row": 1445,
+        "declared": "medium",
+        "tag": "recherche-medicale",
+        "required": "high"
+      },
+      {
+        "row": 1446,
+        "declared": "medium",
+        "tag": "recherche-medicale",
+        "required": "high"
+      }
+    ]
+  },
+  "duplicates": {
+    "externalIds": [],
+    "exactQuestions": [],
+    "strongSimilarities": [
+      {
+        "rowA": 236,
+        "rowB": 1121,
+        "score": 0.778,
+        "questionA": "Préféreriez-vous le produit local ou le produit au meilleur bilan écologique global ?",
+        "questionB": "Préféreriez-vous le produit local ou le produit ayant le meilleur bilan global ?"
+      }
+    ],
+    "strongSimilarityCount": 1
+  },
+  "editorialHeuristics": {
+    "potentiallyLeading": [
+      {
+        "row": 3,
+        "question": "Seriez-vous prêt(e) à quitter un réseau social devenu mauvais pour votre estime personnelle, même si tous vos proches y restent ?",
+        "reason": "Vocabulaire potentiellement chargé ou présupposé."
+      },
+      {
+        "row": 63,
+        "question": "Seriez-vous prêt(e) à voter blanc plutôt que choisir le candidat que vous jugez le moins mauvais ?",
+        "reason": "Vocabulaire potentiellement chargé ou présupposé."
+      },
+      {
+        "row": 230,
+        "question": "À quelle fréquence vous arrive-t-il de rejeter une mesure écologique lorsqu’elle vous semble socialement injuste ?",
+        "reason": "Vocabulaire potentiellement chargé ou présupposé."
+      },
+      {
+        "row": 331,
+        "question": "Préféreriez-vous un excellent poste avec un mauvais manager ou un poste moyen avec un excellent manager ?",
+        "reason": "Vocabulaire potentiellement chargé ou présupposé."
+      },
+      {
+        "row": 357,
+        "question": "Êtes-vous d’accord avec l’idée qu’un associé mal choisi peut être plus dangereux qu’une mauvaise idée ?",
+        "reason": "Vocabulaire potentiellement chargé ou présupposé."
+      },
+      {
+        "row": 877,
+        "question": "Êtes-vous d’accord avec l’idée que le sport pratiqué pour la santé peut devenir mauvais lorsqu’il se transforme en obsession de performance ?",
+        "reason": "Vocabulaire potentiellement chargé ou présupposé."
+      },
+      {
+        "row": 968,
+        "question": "Seriez-vous prêt(e) à payer très cher pour voir un artiste que vous aimez vraiment une seule fois ?",
+        "reason": "Vocabulaire potentiellement chargé ou présupposé."
+      },
+      {
+        "row": 1222,
+        "question": "Êtes-vous d’accord avec l’idée que la chasse peut avoir un rôle de gestion mais ne devrait jamais être exemptée d’exigences strictes de sécurité et de bien-être ?",
+        "reason": "Vocabulaire potentiellement chargé ou présupposé."
+      }
+    ],
+    "possiblyIncompleteOptions": [],
+    "note": "Alertes heuristiques à relire humainement; elles ne constituent pas des erreurs automatiques."
+  },
+  "validation": {
+    "errorCodeDistribution": {},
+    "errors": [],
+    "warnings": []
+  },
+  "recommendations": [
+    "Conserver la conversion documentée de ready vers published et des cinq formats vers question_format.",
+    "Relire les niveaux de sensibilité signalés par l’heuristique avant publication.",
+    "Maintenir la feuille Tags et la source canonique synchronisées avant chaque futur import.",
+    "Relire humainement les similarités fortes et les alertes de formulation/options avant publication."
+  ]
+}

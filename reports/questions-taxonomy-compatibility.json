@@ -1,0 +1,19 @@
+{
+  "initialSynchronization": {
+    "tagsCreated": 12,
+    "tagsUpdated": 166,
+    "tagsReactivated": 0,
+    "tagsUnchanged": 0,
+    "uniqueUsedCategoryTagPairs": 522,
+    "categoryTagPairsCreated": 325,
+    "questionsWritten": 0
+  },
+  "idempotenceVerification": {
+    "tagsCreated": 0,
+    "tagsUpdated": 0,
+    "tagsReactivated": 0,
+    "tagsUnchanged": 178,
+    "categoryTagPairsCreated": 0,
+    "questionsWritten": 0
+  }
+}
