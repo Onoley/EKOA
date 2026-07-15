@@ -22,13 +22,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname=usePathname();const immersive=pathname==="/fil"||pathname.startsWith("/questions/");
   const centeredLogo=pathname.startsWith("/explorer")||pathname.startsWith("/creer")||pathname.startsWith("/profil");
   return (
-    <div className="app-shell mx-auto min-h-dvh w-full max-w-2xl border-x border-[var(--border)] pb-20">
+    <div className="app-shell mx-auto min-h-dvh w-full max-w-2xl border-x border-[var(--border)] pb-[calc(5rem+env(safe-area-inset-bottom))]">
       {!immersive?<header className={`sticky top-0 z-30 flex min-h-16 items-center border-b px-5 ${centeredLogo?"justify-center":""}`}>
         <Link href="/fil" aria-label="Ekoa, accueil"><BrandLogo className="h-auto w-[5.75rem]" priority /></Link>
       </header>:null}
       {children}
-      <nav aria-label="Navigation principale" className="app-nav fixed inset-x-0 bottom-0 z-40 mx-auto flex w-full max-w-2xl justify-around border-t px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-1.5">
-        {tabs.map((tab) => {const active=pathname===tab.href||pathname.startsWith(`${tab.href}/`);return <Link key={tab.href} href={tab.href} aria-current={active?"page":undefined} className={`flex min-h-13 min-w-16 flex-col items-center justify-center rounded-xl text-[0.68rem] font-semibold outline-none focus-visible:ring-3 focus-visible:ring-[#b9c8f5] ${active?"text-[var(--accent)]":"text-[var(--muted)]"}`}><span className={`tab-icon ${tab.icon==="create"?"tab-icon-create":""}`}><TabIcon name={tab.icon}/></span>{tab.label}</Link>})}
+      <nav aria-label="Navigation principale" className="app-nav fixed inset-x-0 bottom-0 z-40 mx-auto flex w-full max-w-2xl justify-around border-t px-2 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2">
+        {tabs.map((tab) => {const active=pathname===tab.href||pathname.startsWith(`${tab.href}/`);return <Link key={tab.href} href={tab.href} aria-current={active?"page":undefined} className={`flex min-h-14 min-w-17 flex-col items-center justify-center gap-0.5 rounded-xl text-[0.7rem] font-semibold outline-none focus-visible:ring-3 focus-visible:ring-[#b9c8f5] ${active?"text-[var(--accent)]":"text-[var(--muted)]"}`}><span className={`tab-icon ${tab.icon==="create"?"tab-icon-create":""}`}><TabIcon name={tab.icon}/></span>{tab.label}</Link>})}
       </nav>
     </div>
   );
