@@ -14,6 +14,7 @@ export function Feed({ type, category,initialQuestion }: { type: FeedType; categ
   const [pages, setPages] = useState<Page[]>([]);
   const [cursor, setCursor] = useState<string | null | undefined>(undefined);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const viewport = useRef<HTMLElement>(null);
   const loader = useRef<HTMLDivElement>(null);
   const loading = useRef(false);
 
@@ -40,8 +41,9 @@ export function Feed({ type, category,initialQuestion }: { type: FeedType; categ
   }, [load]);
   useEffect(() => {
     const node = loader.current;
-    if (!node || !cursor) return;
-    const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) void load(cursor); }, { rootMargin: "300px" });
+    const root = viewport.current;
+    if (!node || !root || !cursor) return;
+    const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) void load(cursor); }, { root, rootMargin: "0px 0px 300px 0px" });
     observer.observe(node); return () => observer.disconnect();
   }, [cursor, load]);
 
@@ -52,13 +54,13 @@ export function Feed({ type, category,initialQuestion }: { type: FeedType; categ
       <Link href="/fil" aria-current={type === "for_you" ? "page" : undefined} className={`feed-tab ${type === "for_you" ? "feed-tab-active" : ""}`}>Pour toi</Link>
       <Link href="/fil?mode=suivis" aria-current={type === "following" ? "page" : undefined} className={`feed-tab ${type === "following" ? "feed-tab-active" : ""}`}>Suivis</Link>
     </nav>}
-    <section aria-label={category ? `Questions de la catégorie ${category.name}` : type === "for_you" ? "Questions pour vous" : "Questions suivies"} className="feed-viewport h-[calc(100dvh-4.75rem)] snap-y snap-mandatory overflow-y-auto overscroll-contain">
+    <section ref={viewport} aria-label={category ? `Questions de la catégorie ${category.name}` : type === "for_you" ? "Questions pour vous" : "Questions suivies"} className="feed-viewport h-[calc(100dvh-4.75rem)] snap-y snap-mandatory overflow-y-auto overscroll-contain">
       {items.map(({ item, ...context }) => <FeedCard key={item.question_id} item={item} feed={type} {...context} />)}
       {status === "loading" ? <div className="flex min-h-40 items-center justify-center p-6" role="status">Chargement des questions…</div> : null}
       {status === "error" ? <div className="empty-state m-5" role="alert"><h1 className="text-xl font-bold">Impossible de charger le fil</h1><p className="body-copy mt-2">Vérifiez votre connexion puis réessayez.</p><button className="primary-button mt-5" onClick={() => void load(cursor)}>Réessayer</button></div> : null}
       {status === "ready" && items.length === 0 ? <div className="empty-state m-5"><h1 className="text-xl font-bold">Les premières questions arrivent bientôt.</h1><p className="body-copy mt-2">{category ? `La catégorie ${category.name} est prête à accueillir ses premières questions.` : type === "following" ? "Vos nouvelles catégories suivies apparaîtront ici dès qu’une question sera publiée." : "La nouvelle taxonomie Ekoa est installée. Aucun contenu artificiel ne sera ajouté."}</p></div> : null}
       {status === "ready" && items.length > 0 && cursor === null ? <p className="p-8 text-center text-sm text-[var(--muted)]">Vous avez vu toutes les questions disponibles.</p> : null}
-      <div ref={loader} aria-hidden="true" />
+      <div ref={loader} className="h-px w-full" aria-hidden="true" />
     </section>
   </main>;
 }
