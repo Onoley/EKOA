@@ -4,7 +4,7 @@ import { ALGORITHM_VERSION } from "./schema";
 const cursorSchema = z.object({
   version: z.literal(ALGORITHM_VERSION),
   sessionId: z.uuid(),
-  snapshot: z.iso.datetime(),
+  snapshot: z.iso.datetime({ offset: true }),
   offset: z.number().int().min(0).max(10_000),
 });
 

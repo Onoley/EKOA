@@ -12,4 +12,9 @@ describe("feed cursor", () => {
     expect(decodeCursor("invalid")).toBeNull();
     expect(decodeCursor(Buffer.from(JSON.stringify({ version: 0 })).toString("base64url"))).toBeNull();
   });
+
+  it("accepte le fuseau UTC renvoyé par Supabase", () => {
+    const cursor = { version: 1 as const, sessionId:id, snapshot: "2026-07-15T10:00:00+00:00", offset:5 };
+    expect(decodeCursor(encodeCursor(cursor))).toEqual(cursor);
+  });
 });
