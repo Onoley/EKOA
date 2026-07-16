@@ -23,13 +23,14 @@ export function ProfileAvatar({
   verified?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
+  const [version] = useState(() => Date.now());
   const initial = username === "membre supprimé" ? "?" : username.slice(0, 1).toLocaleUpperCase("fr");
 
   return <span className={className}>
     {!failed ? (
       // The public Supabase host is configured at runtime, so next/image cannot whitelist it statically.
       // eslint-disable-next-line @next/next/no-img-element
-      <img src={getAvatarUrl(supabaseUrl, userId)} alt="" className="profile-avatar-image" onError={() => setFailed(true)} />
+      <img src={getAvatarUrl(supabaseUrl, userId, version)} alt="" className="profile-avatar-image" onError={() => setFailed(true)} />
     ) : <span aria-hidden="true">{initial}</span>}
     {verified ? <span className="feed-author-badge" aria-label="Profil vérifié">✓</span> : null}
   </span>;
