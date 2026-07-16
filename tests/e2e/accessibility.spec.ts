@@ -3,6 +3,11 @@ import { expect, test } from "@playwright/test";
 test("la connexion est utilisable au clavier sur mobile", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("main")).toBeVisible();
+  const setupState = page.getByText("La configuration Supabase est requise");
+  if (await setupState.isVisible()) {
+    await expect(setupState).toBeVisible();
+    return;
+  }
   await page.keyboard.press("Tab");
   const focused = page.locator(":focus");
   await expect(focused).toBeVisible();

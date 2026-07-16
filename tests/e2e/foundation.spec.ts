@@ -13,6 +13,11 @@ test("affiche la connexion française ou son état de configuration", async ({ p
 
 test("propose la création de compte et la récupération du mot de passe", async ({ page }) => {
   await page.goto("/");
+  const setupState = page.getByText("La configuration Supabase est requise");
+  if (await setupState.isVisible()) {
+    await expect(setupState).toBeVisible();
+    return;
+  }
   await page.getByRole("tab", { name: "Créer un compte" }).click();
   await expect(page.getByRole("button", { name: "Créer mon compte" })).toBeVisible();
   await page.goto("/mot-de-passe/oublie");
