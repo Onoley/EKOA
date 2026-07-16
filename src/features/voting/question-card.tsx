@@ -51,9 +51,9 @@ export function QuestionCard(props: Props) {
       {props.immersive?<CommentsSheet questionId={props.questionId}/>:<Link href={`/questions/${props.questionId}#comments-${props.questionId}`} className="secondary-button compact col-span-2 gap-2 sm:col-span-1" aria-label="Afficher les commentaires de cette question"><Icon name="comment" /><span>Commentaires</span></Link>}
     </div>
     <div className={props.immersive?"feed-action-feedback":""}>
-      {vote.message ? <p role={vote.status === "error" ? "alert" : "status"} className={vote.status === "error" ? "field-error" : "mt-4 text-sm text-green-800"}>{vote.message}</p> : null}
-      {follow.message ? <p role={follow.status === "error" ? "alert" : "status"} className={follow.status === "error" ? "field-error" : "mt-3 text-sm text-green-800"}>{follow.message}</p> : null}
-      {upvote.message ? <p role={upvote.status === "error" ? "alert" : "status"} className={upvote.status === "error" ? "field-error" : "mt-3 text-sm text-green-800"}>{upvote.message}</p> : null}
+      {vote.message ? <p key={`${vote.status}-${vote.message}`} role={vote.status === "error" ? "alert" : "status"} className={vote.status === "error" ? "field-error" : "mt-4 text-sm text-green-800"}>{vote.message}</p> : null}
+      {follow.message ? <p key={`${follow.status}-${follow.message}`} role={follow.status === "error" ? "alert" : "status"} className={follow.status === "error" ? "field-error" : "mt-3 text-sm text-green-800"}>{follow.message}</p> : null}
+      {upvote.message ? <p key={`${upvote.status}-${upvote.message}`} role={upvote.status === "error" ? "alert" : "status"} className={upvote.status === "error" ? "field-error" : "mt-3 text-sm text-green-800"}>{upvote.message}</p> : null}
     </div>
     {props.immersive?null:<ReportForm targetType="question" targetId={props.questionId} label="Signaler cette question" />}
     {props.showComments ? <CommentsSection questionId={props.questionId} /> : null}

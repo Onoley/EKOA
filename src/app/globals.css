@@ -68,7 +68,7 @@ button, input, select, textarea { font: inherit; }
 .feed-report-action { position: absolute; top: 5.15rem; right: .35rem; z-index: 2; width: 4.5rem; }
 .feed-action-feedback { position: fixed; right: 5.25rem; bottom: calc(5rem + env(safe-area-inset-bottom)); left: .75rem; z-index: 30; pointer-events: none; }
 .feed-action-feedback:empty { display: none; }
-.feed-action-feedback p { width: fit-content; max-width: 100%; margin: 0; border: 1px solid var(--border); border-radius: .75rem; background: rgba(255,255,255,.96); padding: .55rem .75rem; color: var(--success); font-size: .78rem; font-weight: 700; line-height: 1.25; box-shadow: 0 6px 20px rgba(11,11,12,.1); }
+.feed-action-feedback p { width: fit-content; max-width: 100%; margin: 0; border: 1px solid var(--border); border-radius: .75rem; background: rgba(255,255,255,.96); padding: .55rem .75rem; color: var(--success); font-size: .78rem; font-weight: 700; line-height: 1.25; box-shadow: 0 6px 20px rgba(11,11,12,.1); animation: feed-feedback-hide 1.5s ease forwards; }
 .feed-action-feedback p + p { margin-top: .35rem; }
 .feed-action-feedback .field-error { color: var(--danger); }
 .feed-action-rail form { width: 100%; }
@@ -166,6 +166,7 @@ button, input, select, textarea { font: inherit; }
 .form-navigation { position: sticky; bottom: calc(4.35rem + env(safe-area-inset-bottom)); z-index: 20; margin-inline: -.5rem; border: 1px solid var(--border); border-radius: 1rem; background: rgba(255,255,255,.97); padding: .5rem; box-shadow: 0 -8px 24px rgba(11,11,12,.07); }
 
 @keyframes sheet-in { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes feed-feedback-hide { 0%,75% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }
 @media (min-width: 640px) { .feed-question-card { padding-right: 6rem; padding-left: 2rem; } .feed-action-rail { right: 1rem; } }
 @media (max-height: 760px) { .feed-question-card h2 { font-size: 1.45rem; } .feed-answer-button { min-height: 3rem; padding: .6rem .85rem; } .feed-action-rail { gap: .3rem; } .feed-rail-button { min-height: 3.15rem; } .feed-rail-button span:first-child { width: 2.35rem; height: 2.35rem; } .feed-author-avatar { width: 2.65rem; height: 2.65rem; } }
 @media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
