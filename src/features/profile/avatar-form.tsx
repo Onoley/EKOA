@@ -42,9 +42,12 @@ export function AvatarForm({ userId, username, supabaseUrl }: { userId: string; 
       setHasImage(true);
       setVersion(Date.now());
       setMessage("Photo de profil mise à jour.");
-    } catch {
+    } catch (uploadError) {
+      console.warn("profile.avatar_upload_failed", {
+        code: uploadError instanceof Error ? uploadError.name : "unknown",
+      });
       setError(true);
-      setMessage("La photo n’a pas pu être enregistrée.");
+      setMessage("La photo n’a pas pu être enregistrée. Réessayez après l’application de la dernière mise à jour de la base.");
     } finally {
       setPending(false);
     }
