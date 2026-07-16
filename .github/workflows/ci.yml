@@ -23,5 +23,9 @@ jobs:
       - run: pnpm test
       - run: pnpm test:rls
       - run: pnpm build
-      - run: pnpm exec playwright install --with-deps chromium
-      - run: pnpm test:e2e
+      - name: Install Playwright
+        if: ${{ vars.RUN_E2E == 'true' }}
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Run end-to-end tests
+        if: ${{ vars.RUN_E2E == 'true' }}
+        run: pnpm test:e2e
