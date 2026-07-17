@@ -3,14 +3,20 @@ import { normalizeQuestionText } from "./normalization";
 
 export const QUESTION_MAX_LENGTH = 180;
 export const OPTION_MAX_LENGTH = 80;
-const contactPattern = /(https?:\/\/|www\.|[\w.%+-]+@[\w.-]+\.[a-z]{2,}|\+?\d[\d .-]{7,}|@[a-z0-9_]{2,})/i;
+const directContactPattern = /(https?:\/\/|www\.|[\w.%+-]+@[\w.-]+\.[a-z]{2,}|@[a-z0-9_]{2,})/i;
+const phonePattern = /\+?\d[\d .-]{7,}/i;
+const currencyAmountPattern = /[+-]?\d[\d .-]*\s*€/gi;
+
+export function containsProhibitedContactDetails(value: string) {
+  return directContactPattern.test(value) || phonePattern.test(value.replace(currencyAmountPattern, " "));
+}
 
 export const questionSchema = z.object({
   questionId: z.uuid().nullable(),
   previousWaveId: z.uuid().nullable(),
-  text: z.string().trim().min(10, "La question doit contenir au moins 10 caractères.").max(QUESTION_MAX_LENGTH, `La question est limitée à ${QUESTION_MAX_LENGTH} caractères.`).refine((value) => !contactPattern.test(value), "Les coordonnées et liens ne sont pas autorisés."),
+  text: z.string().trim().min(10, "La question doit contenir au moins 10 caractères.").max(QUESTION_MAX_LENGTH, `La question est limitée à ${QUESTION_MAX_LENGTH} caractères.`).refine((value) => !containsProhibitedContactDetails(value), "Les coordonnées et liens ne sont pas autorisés."),
   categoryId: z.uuid("Sélectionnez une catégorie."),
-  options: z.array(z.string().trim().min(1, "Une réponse ne peut pas être vide.").max(OPTION_MAX_LENGTH, `Une réponse est limitée à ${OPTION_MAX_LENGTH} caractères.`)).min(2).max(6)
+  options: z.array(z.string().trim().min(1, "Une réponse ne peut pas être vide.").max(OPTION_MAX_LENGTH, `Une réponse est limitée à ${OPTION_MAX_LENGTH} caractères.`).refine((value) => !containsProhibitedContactDetails(value), "Les coordonnées et liens ne sont pas autorisés.")).min(2).max(6)
     .refine((values) => new Set(values.map(normalizeQuestionText)).size === values.length, "Chaque réponse doit être différente."),
   tags: z.array(z.string().trim().min(1).max(30).regex(/^[\p{L}\p{N} -]+$/u, "Un tag contient des caractères non autorisés.")).max(3, "Ajoutez au maximum trois tags."),
   minAge: z.number().int().min(18).max(120).nullable(),

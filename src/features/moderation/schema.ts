@@ -45,3 +45,49 @@ export type DetectedTerm={termId:string;canonicalTerm:string;matchedText:string;
 export type DetectedExpression={expressionId:string;canonicalText:string;matchedText:string;start:number;end:number;severity:ModerationSeverity;riskCategories:string[];recommendedAction:z.infer<typeof moderationActionSchema>;targetType:string};
 export type DetectedPattern={patternId:string;slug:string;matchedText:string;capturedGroups:string[];start:number;end:number;severity:ModerationSeverity;riskCategories:string[];recommendedAction:z.infer<typeof moderationActionSchema>;targetType:string;priority:"normal"|"high"|"urgent"};
 export type ModerationResult={action:ModerationDecision;lexicalSeverity:ModerationSeverity;predictedSeverity:ModerationSeverity;confidence:number;targetType:ModerationTargetType;intent:ModerationIntent;detectedTerms:DetectedTerm[];detectedExpressions:DetectedExpression[];detectedPatterns:DetectedPattern[];detectedObfuscations:string[];reasonCodes:string[];contextCodes:string[];suggestedRewrite:string|null;lexiconVersion:string;engineVersion:"moderation-v1"};
+
+export const automatedAdminDecisionSchema=z.object({
+ questionId:z.uuid(),
+ decision:z.enum(["approve_as_is","false_positive","approve_suggested_rewrite","approve_manual_edit","request_rewrite","reject"]),
+ reason:z.string().trim().max(500),
+ warningLevel:z.coerce.number().int().min(0).max(3),
+ text:z.string().trim().max(180).optional(),
+ options:z.array(z.string().trim().min(1).max(80)).max(6),
+}).superRefine((value,ctx)=>{
+ if(["request_rewrite","reject"].includes(value.decision)&&value.reason.length<5)ctx.addIssue({code:"custom",path:["reason"],message:"Précisez la raison de la décision."});
+ if(value.decision==="request_rewrite"&&![0,1].includes(value.warningLevel))ctx.addIssue({code:"custom",path:["warningLevel"],message:"Cette demande accepte uniquement un avertissement de niveau 1."});
+ if(!["request_rewrite","reject"].includes(value.decision)&&value.warningLevel!==0)ctx.addIssue({code:"custom",path:["warningLevel"],message:"Cette décision ne crée pas d’avertissement."});
+ if(value.decision==="approve_manual_edit"){
+  if(!value.text||value.text.length<10)ctx.addIssue({code:"custom",path:["text"],message:"La question doit contenir au moins 10 caractères."});
+  if(value.options.length<2)ctx.addIssue({code:"custom",path:["options"],message:"Ajoutez au moins deux réponses."});
+ }
+});
+
+export const questionRevisionSchema=z.object({
+ questionId:z.uuid(),
+ text:z.string().trim().min(10,"La question doit contenir au moins 10 caractères.").max(180),
+ options:z.array(z.string().trim().min(1).max(80)).min(2).max(6),
+}).refine(value=>new Set(value.options.map(option=>option.toLocaleLowerCase("fr").trim())).size===value.options.length,{path:["options"],message:"Chaque réponse doit être différente."});
+
+export type AutomatedModerationQueueItem={
+ queue_id:string;question_id:string;moderation_check_id:string;user_id:string;username:string;
+ question_text:string;options:Array<{position:number;text:string}>;submitted_at:string;
+ queue_status:"pending"|"in_review"|"revision_required";priority:"normal"|"high"|"urgent";
+ estimated_severity:number;action_recommended:ModerationDecision;target_type:string;intent:string;
+ core_terms:Array<{term:string;source:string}>;expressions:Array<{expression:string;source:string}>;
+ patterns:Array<{pattern:string;source:string}>;signal_sources:string[];reason_codes:string[];
+ suggested_rewrite:string|null;original_text:string;original_options:Array<string>|Array<{position:number;text:string}>;
+};
+
+export type AutomatedModerationHistoryItem={
+ decision_id:string;question_id:string;admin_id:string;admin_username:string;author_username:string;
+ decision:"approve_as_is"|"false_positive"|"approve_suggested_rewrite"|"approve_manual_edit"|"request_rewrite"|"reject";
+ warning_level:number;admin_reason:string;previous_text:string;final_text:string;
+ previous_options:string[];final_options:string[];created_at:string;
+};
+
+export type MyModeratedQuestion={
+ question_id:string;question_text:string;options:Array<{position:number;text:string}>;question_status:string;
+ automated_moderation_status:"not_required"|"pending_admin_review"|"revision_required"|"approved"|"rejected";
+ submitted_at:string;suggested_rewrite:string|null;queue_status:string|null;admin_reason:string|null;warning_level:number;
+};
