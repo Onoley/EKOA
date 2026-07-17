@@ -60,7 +60,7 @@ export async function moderateQuestionDirectly(_state: ModerationState, formData
   const{error}=await supabase.rpc("admin_moderate_question",{requested_question_id:parsed.data.questionId,requested_action:parsed.data.action,requested_reason:parsed.data.reason});
   if(error)return{status:"error",message:"L’action sur la question a échoué."};
   revalidatePath("/admin");revalidatePath("/fil");revalidatePath(`/questions/${parsed.data.questionId}`);
-  return{status:"success",message:parsed.data.action==="remove"?"Question retirée immédiatement.":parsed.data.action==="restore"?"Question restaurée.":parsed.data.action==="feature"?"Question mise en avant pendant 48 heures.":"Mise en avant retirée."};
+  return{status:"success",message:parsed.data.action==="remove"?"Question retirée immédiatement.":parsed.data.action==="restore"?"Question restaurée.":parsed.data.action==="feature_24"?"Question mise en avant pendant 24 heures.":parsed.data.action==="feature_48"?"Question mise en avant pendant 48 heures.":"Mise en avant retirée."};
 }
 
 export async function setQuickVerification(_state: ModerationState,formData:FormData):Promise<ModerationState>{
