@@ -1,10 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { requireAdmin, requireModerator } from "@/features/auth/authorization";
+import { requireActiveProfile, requireAdmin, requireModerator } from "@/features/auth/authorization";
 import { logOperational } from "@/lib/observability/logger";
 import { consumeRateLimit } from "@/lib/rate-limit/rate-limit";
 import { directQuestionActionSchema, forbiddenTermSchema, moderationInputSchema, quickVerificationSchema, suspensionSchema, verificationSchema } from "./schema";
+import { analyzeSubmissionContent, type SubmissionModerationAnalysis } from "./server/submission-analysis";
 
 export type ModerationState = { status: "idle" | "success" | "error"; message: string };
 
@@ -71,3 +72,10 @@ export async function setQuickVerification(_state: ModerationState,formData:Form
   if(error)return{status:"error",message:"La certification n’a pas pu être modifiée."};
   revalidatePath("/admin");revalidatePath("/profil");return{status:"success",message:parsed.data.verified?"Compte certifié immédiatement.":"Certification retirée."};
 }
+
+export async function analyzeQuestionSubmission(text:string,options:string[]):Promise<SubmissionModerationAnalysis>{
+ return analyzeSubmissionContent(text,options);
+}
+
+export async function getCurrentQuestionReviewStatus(){const{supabase}=await requireActiveProfile();const{data,error}=await supabase.rpc("get_current_question_review_status");if(error)throw new Error("question_review_status_unavailable");return Array.isArray(data)?data[0]??null:data??null}
+export async function getPendingModerationQueue(page=1,pageSize=25){const{supabase}=await requireAdmin();const safePage=Math.max(1,Math.trunc(page));const safeSize=Math.min(50,Math.max(1,Math.trunc(pageSize)));const{data,error}=await supabase.rpc("get_pending_automated_moderation_queue",{requested_limit:safeSize,requested_offset:(safePage-1)*safeSize});if(error)throw new Error("moderation_queue_unavailable");return data??[]}

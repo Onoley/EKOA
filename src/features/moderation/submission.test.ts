@@ -1,0 +1,8 @@
+import{describe,expect,it}from"vitest";import{analyzeSubmissionContent}from"./server/submission-analysis";
+describe("agrégation de modération à la soumission",()=>{
+ it("autorise une question et des options neutres",async()=>{const result=await analyzeSubmissionContent("Cette proposition vous semble-t-elle utile ?",["Oui, tout à fait","Non, pas vraiment"]);expect(result.action).toBe("ALLOW");expect(result.checks.map(check=>check.source)).toEqual(["question","option_1","option_2"])} ,15000);
+ it("envoie un terme core en review",async()=>expect((await analyzeSubmissionContent("Cette femme est-elle une chienne ?",["Oui","Non"])).action).toBe("REVIEW"));
+ it("conserve la suggestion sans créer de sanction",async()=>{const result=await analyzeSubmissionContent("Combien de fois votre chienne pisse pendant sa promenade ?",["Jamais","Souvent"]);expect(result.action).toBe("REVIEW");expect(result.suggestedRewrite).not.toBeNull();expect(result).not.toHaveProperty("warning");expect(result).not.toHaveProperty("suspension")});
+ it("rend une menace urgente",async()=>{const result=await analyzeSubmissionContent("Je vais te tuer, est-ce clair ?",["Oui","Non"]);expect(result.action).toBe("BLOCK_RECOMMENDED");expect(result.priority).toBe("urgent");expect(result).not.toHaveProperty("warning")});
+ it("agrège une insulte placée uniquement dans une option",async()=>{const result=await analyzeSubmissionContent("Quelle réponse choisissez-vous ?",["Une réponse neutre","Tu es un connard"]);expect(result.action).toBe("REVIEW");expect(result.checks.find(check=>check.source==="option_2")?.result.detectedTerms.length).toBeGreaterThan(0)});
+});
