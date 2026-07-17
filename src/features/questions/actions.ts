@@ -17,8 +17,20 @@ const dbMessages: Record<string, string> = {
   high_similarity: "Cette question est trop proche d’une question existante.", similarity_confirmation_required: "Confirmez que votre question apporte quelque chose de distinct.",
   contact_details: "Les liens et coordonnées ne sont pas autorisés.",
   forbidden_content: "Ce contenu ne respecte pas les règles de publication.",
+  invalid_question: "La question ne respecte pas la longueur ou le nombre de réponses attendu.",
+  invalid_options: "Une ou plusieurs réponses sont invalides.",
+  duplicate_options: "Chaque réponse proposée doit être différente.",
+  invalid_age_range: "La tranche d’âge sélectionnée est invalide.",
+  invalid_category: "Cette catégorie n’est plus disponible. Choisissez-en une autre.",
+  invalid_moderation_result: "L’analyse de la question n’a pas pu être confirmée. Réessayez.",
+  wave_unavailable: "La question précédente choisie n’est plus disponible.",
+  not_authorized: "Votre session n’est plus valide. Reconnectez-vous puis réessayez.",
   QUESTION_REVIEW_ALREADY_PENDING: "Une question est déjà en cours de vérification. Vous pourrez en proposer une nouvelle lorsque la décision aura été rendue.",
 };
+
+function isTransientSubmissionError(error:{code?:string;message:string}){
+  return error.code==="PGRST303"||error.message.includes("JWT issued at future")||error.message.includes("fetch failed");
+}
 
 export async function saveOrPublishQuestion(_state: QuestionActionState, formData: FormData): Promise<QuestionActionState> {
   const parsed = parseQuestionForm(formData);
@@ -43,14 +55,20 @@ export async function saveOrPublishQuestion(_state: QuestionActionState, formDat
   const similar = (Array.isArray(candidates) ? candidates : []) as SimilarQuestion[];
   const confirmed = formData.get("confirmDistinct") === "yes";
   const analysis=await analyzeQuestionSubmission(value.text,value.options);
-  const{data:questionId,error:publishError}=await createAdminClient().rpc("submit_moderated_question",{requested_user_id:userId,requested_text:value.text,requested_category_id:value.categoryId,requested_options:value.options,requested_tags:value.tags,requested_min_age:value.minAge,requested_max_age:value.maxAge,requested_previous_wave_id:value.previousWaveId,requested_confirmed_medium_similarity:confirmed,requested_moderation:analysis});
+  const submission={requested_user_id:userId,requested_text:value.text,requested_category_id:value.categoryId,requested_options:value.options,requested_tags:value.tags,requested_min_age:value.minAge,requested_max_age:value.maxAge,requested_previous_wave_id:value.previousWaveId,requested_confirmed_medium_similarity:confirmed,requested_moderation:analysis};
+  let publication=await createAdminClient().rpc("submit_moderated_question",submission);
+  if(publication.error&&isTransientSubmissionError(publication.error)){
+    await new Promise(resolve=>setTimeout(resolve,350));
+    publication=await createAdminClient().rpc("submit_moderated_question",submission);
+  }
+  const{data:questionId,error:publishError}=publication;
   if (publishError) {
-    logOperational("warn", "publication.error", { code: "database_rejected" });
+    logOperational("warn", "publication.error", { code: publishError.code||"database_rejected" });
     const key = Object.keys(dbMessages).find((candidate) => publishError.message.includes(candidate));
     if (key === "exact_duplicate" || key === "high_similarity" || key === "similarity_confirmation_required") {
       return { status: "similar", message: dbMessages[key], similar, duplicateBlocked: key !== "similarity_confirmation_required" };
     }
-    return { status: "error", message: key ? dbMessages[key] : "La soumission a échoué.", similar };
+    return { status: "error", message: key ? dbMessages[key] : "La question n’a pas pu être enregistrée. Réessayez dans quelques instants.", similar };
   }
   if(typeof questionId!=="string")return{status:"error",message:"La soumission n’a pas pu être confirmée."};
   redirect(analysis.action==="ALLOW"?`/creer/confirmation?id=${questionId}`:"/profil");
