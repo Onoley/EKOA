@@ -7,8 +7,9 @@ const migration = readFileSync(
 );
 
 describe("retrait de la modération automatique", () => {
-  it("rend les questions en attente à leur auteur sous forme de brouillons", () => {
-    expect(migration).toMatch(/set status = 'draft', published_at = null/);
+  it("publie les questions que la revue automatique retenait", () => {
+    expect(migration).toMatch(/set status = 'published'/);
+    expect(migration).toContain("published_at = coalesce(published_at, now())");
     expect(migration).toContain("'pending_admin_review', 'revision_required'");
   });
 

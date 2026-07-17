@@ -15,12 +15,11 @@ export function rankCandidates(candidates: FeedCandidate[], now: Date, seed: str
     const answerRate = (candidate.vote_count + 2) / (candidate.impression_count + 6);
     const upvoteRate = (candidate.upvote_count + 1) / (candidate.vote_count + 5);
     const followRate = (candidate.follow_count + 1) / (candidate.impression_count + 10);
-    const reportRate = candidate.report_count / (candidate.impression_count + 10);
     const affinity = candidate.followed_category || candidate.followed_author ? 1 : 0;
     const exploration = seededExploration(candidate.question_id, seed);
     const authorPenalty = recentAuthors.filter((id) => id === candidate.author_id).length * 1.2;
     const categoryPenalty = recentCategories.filter((id) => id === candidate.category_id).length * 0.5;
-    const score = affinity * 2.2 + freshness * 1.8 + answerRate * 1.2 + upvoteRate + followRate * 0.8 + exploration * 0.45 - reportRate * 4 - authorPenalty - categoryPenalty;
+    const score = affinity * 2.2 + freshness * 1.8 + answerRate * 1.2 + upvoteRate + followRate * 0.8 + exploration * 0.45 - authorPenalty - categoryPenalty;
     const reasons = [affinity ? "affinité" : "découverte", freshness > 0.7 ? "récence" : "catalogue"];
     return { ...candidate, score, reasons };
   }).sort((a, b) => b.score - a.score || a.question_id.localeCompare(b.question_id));

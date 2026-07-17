@@ -23,7 +23,7 @@ export function affinityPoints(candidate: Candidate, profile: AffinityProfile) {
 
 export function computeQuestionScore(candidate: Candidate, profile: AffinityProfile, now: Date): ScoredCandidate {
   const ageDays = Math.max(0, (now.getTime() - new Date(candidate.publishedAt).getTime()) / 86_400_000);
-  const editorialQuality = RECOMMENDATION_CONFIG.editorialQualityWeight * clamp01(0.55 + candidate.publicationPriority / 250 + (candidate.reportCount === 0 ? 0.05 : 0));
+  const editorialQuality = RECOMMENDATION_CONFIG.editorialQualityWeight * clamp01(0.6 + candidate.publicationPriority / 250);
   const voteRate = smoothedRate(candidate.voteCount, candidate.impressionCount, 0.45);
   const upvoteRate = smoothedRate(candidate.upvoteCount, candidate.impressionCount, 0.08);
   const commentRate = smoothedRate(candidate.commentCount, candidate.impressionCount, 0.03);
@@ -33,8 +33,6 @@ export function computeQuestionScore(candidate: Candidate, profile: AffinityProf
   const noveltyRatio = daysSinceShown === null ? 1 : daysSinceShown > 30 ? 0.7 : daysSinceShown >= 7 ? 0.4 : daysSinceShown >= 1 ? 0.1 : 0;
   const explorationRatio = clamp01((RECOMMENDATION_CONFIG.priorStrength - Math.min(RECOMMENDATION_CONFIG.priorStrength, candidate.impressionCount)) / RECOMMENDATION_CONFIG.priorStrength * 0.75 + (candidate.sourcePool === "exploration" ? 0.25 : 0));
   const freshnessRatio = candidate.editorialType === "topical" ? Math.exp(-ageDays / 14) : 0.65 + 0.35 * Math.exp(-ageDays / 180);
-  const reportRate = smoothedRate(candidate.reportCount, candidate.impressionCount, 0.002);
-  const reportPenalty = reportRate > 0.03 ? -20 : reportRate > 0.01 ? -8 : 0;
   const unansweredRatio = candidate.impressionCount > 0 ? clamp01((candidate.impressionCount - candidate.voteCount) / candidate.impressionCount) : 0;
   const unansweredConfidence = candidate.impressionCount / (candidate.impressionCount + RECOMMENDATION_CONFIG.priorStrength);
   const unansweredPenalty = rounded(-12 * unansweredRatio * unansweredConfidence);
@@ -47,7 +45,7 @@ export function computeQuestionScore(candidate: Candidate, profile: AffinityProf
     exploration: rounded(RECOMMENDATION_CONFIG.explorationWeight * explorationRatio),
     freshness: rounded(RECOMMENDATION_CONFIG.freshnessWeight * freshnessRatio),
     editorialPriority: rounded(RECOMMENDATION_CONFIG.editorialPriorityWeight * clamp01(candidate.publicationPriority / 100)),
-    reportPenalty,
+    reportPenalty: 0,
     unansweredPenalty,
     recentImpressionPenalty,
   };

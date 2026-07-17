@@ -35,7 +35,7 @@ describe("score V1",()=>{
   it("lisse les petits volumes",()=>expect(smoothedRate(2,2,0.5)).toBeLessThan(0.55));
   it("bonifie une question jamais vue",()=>{const fresh=computeQuestionScore(candidate({lastShownAt:null}),emptyAffinity,now);const seen=computeQuestionScore(candidate({lastShownAt:"2026-07-13T12:00:00Z"}),emptyAffinity,now);expect(fresh.scoreComponents.novelty).toBeGreaterThan(seen.scoreComponents.novelty)});
   it("bonifie une question sous-exposée",()=>{const low=computeQuestionScore(candidate({impressionCount:0}),emptyAffinity,now);const known=computeQuestionScore(candidate({impressionCount:500}),emptyAffinity,now);expect(low.scoreComponents.exploration).toBeGreaterThan(known.scoreComponents.exploration)});
-  it("pénalise un taux de signalement anormal",()=>expect(computeQuestionScore(candidate({reportCount:30,impressionCount:100}),emptyAffinity,now).scoreComponents.reportPenalty).toBeLessThan(0));
+  it("laisse toute décision liée aux signalements à l’administration",()=>expect(computeQuestionScore(candidate({reportCount:30,impressionCount:100}),emptyAffinity,now).scoreComponents.reportPenalty).toBe(0));
   it("pénalise toute impression sans réponse indépendamment de sa durée",()=>{const ignored=computeQuestionScore(candidate({impressionCount:100,voteCount:10,fastSkipCount:0}),emptyAffinity,now);const answered=computeQuestionScore(candidate({impressionCount:100,voteCount:100,fastSkipCount:0}),emptyAffinity,now);expect(ignored.scoreComponents.unansweredPenalty).toBeLessThan(answered.scoreComponents.unansweredPenalty)});
   it("convertit la priorité éditoriale",()=>expect(computeQuestionScore(candidate({publicationPriority:100}),emptyAffinity,now).scoreComponents.editorialPriority).toBe(5));
 });

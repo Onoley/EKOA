@@ -1,9 +1,12 @@
 begin;
 
--- Automated question moderation is paused. Preserve pending user content as
--- editable drafts before removing the automated review infrastructure.
+-- Automated question moderation is paused. Publish submissions that were held
+-- by the automated review so removing the queue does not strand user content.
 update public.questions
-set status = 'draft', published_at = null, updated_at = now()
+set status = 'published',
+    moderation_status = 'clear',
+    published_at = coalesce(published_at, now()),
+    updated_at = now()
 where automated_moderation_status in ('pending_admin_review', 'revision_required')
   and status = 'under_review';
 

@@ -28,13 +28,13 @@ La première version utilise les liens magiques Supabase et des cookies SSR. OAu
 
 La validation Zod améliore les erreurs utilisateur, mais la fonction SQL `complete_onboarding` répète les invariants et applique profil et catégories dans une seule transaction.
 
-## ADR-008 — Doublons sans service sémantique
+## ADR-008 — Doublons sans service sémantique (remplacée)
 
-La phase 2 normalise les textes avec `unaccent`, utilise `pg_trgm`, la catégorie et le recouvrement des réponses. Les doublons exacts et très proches sont bloqués; une similarité moyenne exige une confirmation conservée. Les embeddings restent différés.
+Cette décision historique est remplacée par ADR-033. La publication n'est plus bloquée ni retardée par une détection de doublon ou de similarité.
 
-## ADR-009 — Publication transactionnelle
+## ADR-009 — Publication transactionnelle (remplacée)
 
-Les brouillons sont persistés par une fonction dédiée. La publication relit les paramètres, verrouille l’auteur et le texte, puis applique quotas, anti-spam et similarité dans la même transaction.
+Cette décision historique est remplacée par ADR-033. Les quotas produit, l'analyse de contenu et les contrôles de similarité ne font plus partie des conditions de publication.
 
 ## ADR-010 — Résultats après participation
 
@@ -58,7 +58,7 @@ Le catalogue initial ne justifie pas un service de recherche séparé. PostgreSQ
 
 ## ADR-015 — Tendance fondée sur des actions communautaires
 
-Le score sur sept jours utilise seulement votes, soutiens et suivis validés, avec décroissance par ancienneté et pénalité de signalement. Les impressions, passages et durées ne peuvent pas rendre une question tendance.
+Le score sur sept jours utilise seulement votes, soutiens et suivis validés, avec décroissance par ancienneté. Les impressions, passages, durées et signalements ne peuvent pas rendre une question plus ou moins tendance.
 
 ## ADR-016 — Commentaires plats après participation
 
@@ -127,3 +127,11 @@ La remise à zéro supprime les contenus et interactions dans une transaction av
 ## ADR-032 — Format, temporalité et statut de ligne restent distincts
 
 La colonne Excel historique `editorial_type` alimente `question_format` (`opinion`, `projection`, `regulation`, `comportement`, `dilemme`). `editorial_type` conserve son sens de temporalité et vaut `evergreen` par défaut. Le statut de ligne `ready/review/rejected` est converti explicitement en `published/draft/ignoré`, sans étendre l’enum métier.
+
+## ADR-033 — Publication ouverte et modération communautaire a posteriori
+
+Tout membre actif publie immédiatement une question dès que sa structure et ses références à la taxonomie canonique sont valides. Aucune analyse automatisée du contenu, détection de doublon ou de similarité, ni aucun quota produit ne bloque ou ne retarde la publication. Cette décision remplace ADR-008 et ADR-009.
+
+Une question reste publique tant qu'un administrateur n'agit pas explicitement. Les signalements seuls ne modifient ni son statut ni sa visibilité. La file d'administration regroupe les signalements par question et n'affiche un groupe qu'à partir de trois signalements actifs provenant de trois membres distincts. Une décision porte sur la question et résout atomiquement tout le groupe de signalements actifs associé.
+
+Le nombre de signalements n'entre dans aucun score de classement, de recherche ou de tendance. Dans cette première version, les commentaires conservent leur traitement existant signalement par signalement; l'absence de regroupement et de seuil pour ces derniers est une limitation connue.
