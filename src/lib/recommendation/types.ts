@@ -67,6 +67,7 @@ export type ScoreComponents = {
   freshness: number;
   editorialPriority: number;
   reportPenalty: number;
+  unansweredPenalty: number;
   recentImpressionPenalty: number;
 };
 

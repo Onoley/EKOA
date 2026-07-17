@@ -35,6 +35,9 @@ export function computeQuestionScore(candidate: Candidate, profile: AffinityProf
   const freshnessRatio = candidate.editorialType === "topical" ? Math.exp(-ageDays / 14) : 0.65 + 0.35 * Math.exp(-ageDays / 180);
   const reportRate = smoothedRate(candidate.reportCount, candidate.impressionCount, 0.002);
   const reportPenalty = reportRate > 0.03 ? -20 : reportRate > 0.01 ? -8 : 0;
+  const unansweredRatio = candidate.impressionCount > 0 ? clamp01((candidate.impressionCount - candidate.voteCount) / candidate.impressionCount) : 0;
+  const unansweredConfidence = candidate.impressionCount / (candidate.impressionCount + RECOMMENDATION_CONFIG.priorStrength);
+  const unansweredPenalty = rounded(-12 * unansweredRatio * unansweredConfidence);
   const recentImpressionPenalty = daysSinceShown !== null && daysSinceShown < 1 ? -30 : daysSinceShown !== null && daysSinceShown < 7 ? -8 : 0;
   const scoreComponents: ScoreComponents = {
     affinity: rounded(affinityPoints(candidate, profile)),
@@ -45,6 +48,7 @@ export function computeQuestionScore(candidate: Candidate, profile: AffinityProf
     freshness: rounded(RECOMMENDATION_CONFIG.freshnessWeight * freshnessRatio),
     editorialPriority: rounded(RECOMMENDATION_CONFIG.editorialPriorityWeight * clamp01(candidate.publicationPriority / 100)),
     reportPenalty,
+    unansweredPenalty,
     recentImpressionPenalty,
   };
   const finalScore = candidate.adminFeatured ? 100 : rounded(Math.max(0, Math.min(100, Object.values(scoreComponents).reduce((sum, value) => sum + value, 0))));
