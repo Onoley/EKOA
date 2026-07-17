@@ -12,7 +12,7 @@ export const candidateSchema = z.object({
 });
 export type FeedCandidate = z.infer<typeof candidateSchema>;
 export type FeedType = z.infer<typeof feedTypeSchema>;
-export const feedItemSchema = candidateSchema.pick({ question_id: true, question_text: true, author_id: true, author_username: true, author_verified: true, category_id: true, category_name: true, published_at: true, options: true, upvote_count: true, initially_followed: true }).extend({ author_is_admin:z.boolean(),initially_upvoted: z.boolean(), sponsored_by:z.string().min(2).max(160).nullable() });
+export const feedItemSchema = candidateSchema.pick({ question_id: true, question_text: true, author_id: true, author_username: true, author_verified: true, category_id: true, category_name: true, published_at: true, options: true, upvote_count: true, initially_followed: true }).extend({ author_is_admin:z.boolean(),admin_featured:z.boolean(),initially_upvoted: z.boolean(), sponsored_by:z.string().min(2).max(160).nullable() });
 export type FeedItem = z.infer<typeof feedItemSchema>;
 export const eventSchema = z.object({
   eventId: z.uuid(), eventType: z.enum(["impression", "skip", "dwell"]), questionId: z.uuid(), impressionId: z.uuid(),

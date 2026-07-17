@@ -16,12 +16,12 @@ const rawCandidateSchema = z.object({
 
 type CandidateInput = z.infer<typeof rawCandidateSchema>;
 
-function toCandidate(row: CandidateInput): Candidate {
+function toCandidate(row: CandidateInput, featuredIds: Set<string>): Candidate {
   return {
     questionId: row.question_id, questionText: row.question_text, authorId: row.author_id, authorUsername: row.author_username ?? "membre supprimé", authorVerified: row.author_verified,
     categoryId: row.category_id, categorySlug: row.category_slug, categoryName: row.category_name, universeId: row.universe_id, universeSlug: row.universe_slug,
     publishedAt: row.published_at, options: row.options, tags: row.tags, sensitivity: row.sensitivity, format: row.question_format, editorialType: row.editorial_type,
-    publicationPriority: row.publication_priority,targetMinAge:row.target_min_age,targetMaxAge:row.target_max_age,isActive:row.is_active,moderationEligible:row.moderation_eligible,sponsorEligible:row.sponsor_eligible, voteCount: row.vote_count, upvoteCount: row.upvote_count, commentCount: row.comment_count, reportCount: row.report_count,
+    publicationPriority: row.publication_priority,adminFeatured:featuredIds.has(row.question_id)&&row.last_shown_at===null,targetMinAge:row.target_min_age,targetMaxAge:row.target_max_age,isActive:row.is_active,moderationEligible:row.moderation_eligible,sponsorEligible:row.sponsor_eligible, voteCount: row.vote_count, upvoteCount: row.upvote_count, commentCount: row.comment_count, reportCount: row.report_count,
     impressionCount: row.impression_count, fastSkipCount: row.fast_skip_count, followedCategory: row.followed_category, followedAuthor: row.followed_author,
     initiallyFollowed: row.initially_followed, lastShownAt: row.last_shown_at, sponsoredBy: row.sponsored_by, sourcePool: row.source_pool,
   };
@@ -33,7 +33,12 @@ export async function generateCandidates(db: SupabaseClient, input: { userId: st
     requested_session_id: input.sessionId, requested_snapshot: input.snapshot, requested_limit: RECOMMENDATION_CONFIG.maxCandidates,
   });
   if (error) throw new Error(`recommendation_candidates_failed:${error.code}`);
-  return z.array(rawCandidateSchema).parse(data ?? []).map(toCandidate);
+  const rows=z.array(rawCandidateSchema).parse(data??[]);
+  const ids=rows.map((row)=>row.question_id);
+  const{data:featured,error:featuredError}=ids.length?await db.from("questions").select("id").in("id",ids).gt("featured_until",input.snapshot):{data:[],error:null};
+  if(featuredError)throw new Error("recommendation_featured_lookup_failed");
+  const featuredIds=new Set((featured??[]).map((row)=>row.id as string));
+  return rows.map((row)=>toCandidate(row,featuredIds));
 }
 
 type RawEvent = { event_type: string; occurred_at: string; dwell_ms: number | null; impression_id: string | null; category_id: string | null; question_id: string | null };

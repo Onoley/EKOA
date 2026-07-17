@@ -21,6 +21,7 @@ export type Candidate = {
   format: QuestionFormat;
   editorialType: string;
   publicationPriority: number;
+  adminFeatured?: boolean;
   targetMinAge: number | null;
   targetMaxAge: number | null;
   isActive: boolean;

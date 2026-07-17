@@ -36,7 +36,7 @@ export async function buildRecommendationBlock(request: RecommendationRequest, d
   const sessionQuestionIds=new Set(history.map((item)=>item.questionId));
   const filtered=filterEligibleCandidates(candidates,{votedQuestionIds:new Set(),hiddenQuestionIds:new Set(),archivedQuestionIds:new Set(),reportedQuestionIds:new Set(),blockedAuthorIds:new Set(),sessionQuestionIds,age:request.age});
   const scored=scoreCandidates(filtered.eligible,affinity,now);
-  const explored=applyDeterministicExploration(scored,request.sessionId);
+  const explored=applyDeterministicExploration(scored,request.sessionId).sort((a,b)=>Number(b.adminFeatured)-Number(a.adminFeatured));
   const selected=rerankWithSessionConstraints(explored,history,RECOMMENDATION_CONFIG.reservationSize);
   await reserveFeedItems(request,selected);
   const durationMs=Math.round((performance.now()-startedAt)*100)/100;

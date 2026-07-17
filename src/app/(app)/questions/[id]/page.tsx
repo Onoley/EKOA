@@ -27,7 +27,8 @@ export default async function QuestionPage({ params }: { params: Promise<{ id: s
   ]);
   if (!options?.length || !category || !Array.isArray(author) || !author[0]) notFound();
   const sponsorships=await getActiveSponsorships([id]);
-  const adminProfileIds=await getAdminProfileIds(createAdminClient(),[question.author_id]);
+  const adminClient=createAdminClient();
+  const[adminProfileIds,{data:featuredQuestion}]=await Promise.all([getAdminProfileIds(adminClient,[question.author_id]),adminClient.from("questions").select("id").eq("id",id).gt("featured_until",new Date().toISOString()).maybeSingle()]);
 
   let initialResults;
   if (vote) {
@@ -36,6 +37,6 @@ export default async function QuestionPage({ params }: { params: Promise<{ id: s
     if (parsed.success) initialResults = parsed.data;
   }
   const engagementRow = Array.isArray(engagement) ? engagement[0] : undefined;
-  const initialItem=feedItemSchema.parse({question_id:id,question_text:question.text,author_id:question.author_id,author_username:author[0].username,author_verified:author[0].account_type==="verified",author_is_admin:adminProfileIds.has(question.author_id),category_id:question.category_id,category_name:category.name,published_at:question.published_at,options,upvote_count:engagementRow?.upvote_count??0,initially_followed:Boolean(follow),initially_upvoted:engagementRow?.is_upvoted??false,sponsored_by:sponsorships.get(id)??null});
-  return <div className="question-page relative bg-white"><Link href="/fil" className="question-back-button" aria-label="Retour au fil">←</Link><Feed type="for_you" initialQuestion={{item:initialItem,results:initialResults,requestId:crypto.randomUUID()}}/></div>;
+  const initialItem=feedItemSchema.parse({question_id:id,question_text:question.text,author_id:question.author_id,author_username:author[0].username,author_verified:author[0].account_type==="verified",author_is_admin:adminProfileIds.has(question.author_id),admin_featured:Boolean(featuredQuestion),category_id:question.category_id,category_name:category.name,published_at:question.published_at,options,upvote_count:engagementRow?.upvote_count??0,initially_followed:Boolean(follow),initially_upvoted:engagementRow?.is_upvoted??false,sponsored_by:sponsorships.get(id)??null});
+  return <div className="question-page relative bg-white"><Link href="/fil" className="question-back-button" aria-label="Retour au fil">←</Link><Feed type="for_you" canAdminister={profile.role==="admin"} initialQuestion={{item:initialItem,results:initialResults,requestId:crypto.randomUUID()}}/></div>;
 }

@@ -10,7 +10,7 @@ type Page = { items: FeedItem[]; nextCursor: string | null; requestId: string; a
 
 type InitialQuestion={item:FeedItem;results?:ResultRow[];requestId:string};
 
-export function Feed({ type, category,initialQuestion }: { type: FeedType; category?: { slug: string; name: string };initialQuestion?:InitialQuestion }) {
+export function Feed({ type, category,initialQuestion,canAdminister=false }: { type: FeedType; category?: { slug: string; name: string };initialQuestion?:InitialQuestion;canAdminister?:boolean }) {
   const [pages, setPages] = useState<Page[]>([]);
   const [cursor, setCursor] = useState<string | null | undefined>(undefined);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
@@ -51,7 +51,7 @@ export function Feed({ type, category,initialQuestion }: { type: FeedType; categ
       <Link href="/fil?mode=suivis" aria-current={type === "following" ? "page" : undefined} className={`feed-tab ${type === "following" ? "feed-tab-active" : ""}`}>Suivis</Link>
     </nav>}
     <section onScroll={handleScroll} aria-label={category ? `Questions de la catégorie ${category.name}` : type === "for_you" ? "Questions pour vous" : "Questions suivies"} className="feed-viewport h-[calc(100dvh-4.75rem)] snap-y snap-mandatory overflow-y-auto overscroll-contain">
-      {items.map(({ item, ...context }) => <FeedCard key={item.question_id} item={item} feed={type} {...context} />)}
+      {items.map(({ item, ...context }) => <FeedCard key={item.question_id} item={item} feed={type} canAdminister={canAdminister} {...context} />)}
       {status === "loading" ? <div className="flex min-h-40 items-center justify-center p-6" role="status">Chargement des questions…</div> : null}
       {status === "error" ? <div className="empty-state m-5" role="alert"><h1 className="text-xl font-bold">Impossible de charger le fil</h1><p className="body-copy mt-2">Vérifiez votre connexion puis réessayez.</p><button className="primary-button mt-5" onClick={() => void load(cursor)}>Réessayer</button></div> : null}
       {status === "ready" && items.length === 0 ? <div className="empty-state m-5"><h1 className="text-xl font-bold">Les premières questions arrivent bientôt.</h1><p className="body-copy mt-2">{category ? `La catégorie ${category.name} est prête à accueillir ses premières questions.` : type === "following" ? "Vos nouvelles catégories suivies apparaîtront ici dès qu’une question sera publiée." : "La nouvelle taxonomie Ekoa est installée. Aucun contenu artificiel ne sera ajouté."}</p></div> : null}

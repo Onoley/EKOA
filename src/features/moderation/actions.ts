@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { requireAdmin, requireModerator } from "@/features/auth/authorization";
 import { logOperational } from "@/lib/observability/logger";
 import { consumeRateLimit } from "@/lib/rate-limit/rate-limit";
-import { forbiddenTermSchema, moderationInputSchema, suspensionSchema, verificationSchema } from "./schema";
+import { directQuestionActionSchema, forbiddenTermSchema, moderationInputSchema, quickVerificationSchema, suspensionSchema, verificationSchema } from "./schema";
 
 export type ModerationState = { status: "idle" | "success" | "error"; message: string };
 
@@ -51,4 +51,23 @@ export async function setForbiddenTerm(_state: ModerationState, formData: FormDa
   const { error } = await supabase.rpc("admin_set_forbidden_term", { requested_term: parsed.data.term, requested_severity: parsed.data.severity, requested_active: parsed.data.active });
   if (error) return { status: "error", message: "Le terme n’a pas pu être enregistré." };
   revalidatePath("/admin"); return { status: "success", message: "Terme interdit enregistré." };
+}
+
+export async function moderateQuestionDirectly(_state: ModerationState, formData: FormData): Promise<ModerationState> {
+  const parsed=directQuestionActionSchema.safeParse({questionId:formData.get("questionId"),action:formData.get("action"),reason:formData.get("reason")});
+  if(!parsed.success)return{status:"error",message:parsed.error.issues[0]?.message??"Action invalide."};
+  const{supabase,userId}=await requireAdmin();const limited=await adminLimit(userId);if(limited)return limited;
+  const{error}=await supabase.rpc("admin_moderate_question",{requested_question_id:parsed.data.questionId,requested_action:parsed.data.action,requested_reason:parsed.data.reason});
+  if(error)return{status:"error",message:"L’action sur la question a échoué."};
+  revalidatePath("/admin");revalidatePath("/fil");revalidatePath(`/questions/${parsed.data.questionId}`);
+  return{status:"success",message:parsed.data.action==="remove"?"Question retirée immédiatement.":parsed.data.action==="restore"?"Question restaurée.":parsed.data.action==="feature"?"Question mise en avant pendant 48 heures.":"Mise en avant retirée."};
+}
+
+export async function setQuickVerification(_state: ModerationState,formData:FormData):Promise<ModerationState>{
+  const parsed=quickVerificationSchema.safeParse({userId:formData.get("userId"),verified:formData.get("verified")==="true"});
+  if(!parsed.success)return{status:"error",message:"Compte invalide."};
+  const{supabase,userId}=await requireAdmin();const limited=await adminLimit(userId);if(limited)return limited;
+  const{error}=await supabase.rpc("admin_set_quick_verification",{requested_user_id:parsed.data.userId,requested_verified:parsed.data.verified});
+  if(error)return{status:"error",message:"La certification n’a pas pu être modifiée."};
+  revalidatePath("/admin");revalidatePath("/profil");return{status:"success",message:parsed.data.verified?"Compte certifié immédiatement.":"Certification retirée."};
 }

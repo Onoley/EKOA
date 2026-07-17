@@ -47,7 +47,7 @@ export function computeQuestionScore(candidate: Candidate, profile: AffinityProf
     reportPenalty,
     recentImpressionPenalty,
   };
-  const finalScore = rounded(Math.max(0, Math.min(100, Object.values(scoreComponents).reduce((sum, value) => sum + value, 0))));
+  const finalScore = candidate.adminFeatured ? 100 : rounded(Math.max(0, Math.min(100, Object.values(scoreComponents).reduce((sum, value) => sum + value, 0))));
   return { ...candidate, finalScore, scoreComponents };
 }
 
