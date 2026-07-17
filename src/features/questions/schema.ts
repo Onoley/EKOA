@@ -18,7 +18,7 @@ export const questionSchema = z.object({
   categoryId: z.uuid("Sélectionnez une catégorie."),
   options: z.array(z.string().trim().min(1, "Une réponse ne peut pas être vide.").max(OPTION_MAX_LENGTH, `Une réponse est limitée à ${OPTION_MAX_LENGTH} caractères.`).refine((value) => !containsProhibitedContactDetails(value), "Les coordonnées et liens ne sont pas autorisés.")).min(2).max(6)
     .refine((values) => new Set(values.map(normalizeQuestionText)).size === values.length, "Chaque réponse doit être différente."),
-  tags: z.array(z.string().trim().min(1).max(30).regex(/^[\p{L}\p{N} -]+$/u, "Un tag contient des caractères non autorisés.")).max(3, "Ajoutez au maximum trois tags."),
+  tags: z.array(z.string().trim().min(1).max(30).regex(/^[\p{L}\p{N} &'’+-]+$/u, "Un tag contient des caractères non autorisés.")).max(3, "Ajoutez au maximum trois tags."),
   minAge: z.number().int().min(18).max(120).nullable(),
   maxAge: z.number().int().min(18).max(120).nullable(),
 }).refine((value) => value.minAge === null || value.maxAge === null || value.minAge <= value.maxAge, { path: ["maxAge"], message: "L’âge maximum doit être supérieur à l’âge minimum." });
