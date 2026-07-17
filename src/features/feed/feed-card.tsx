@@ -39,6 +39,6 @@ export function FeedCard({ item, feed, rank, requestId, algorithmVersion,initial
   }, [algorithmVersion, feed, item.question_id, rank, requestId]);
 
   return <div ref={element} className="h-[calc(100dvh-4.75rem)] snap-start snap-always">
-    <QuestionCard questionId={item.question_id} question={item.question_text} category={item.category_name} authorId={item.author_id} author={item.author_username} verified={item.author_verified} options={item.options} initialResults={initialResults} initiallyFollowed={item.initially_followed} initiallyUpvoted={item.initially_upvoted} initialUpvoteCount={item.upvote_count} sponsoredBy={item.sponsored_by} headingLevel="h2" immersive />
+    <QuestionCard questionId={item.question_id} question={item.question_text} category={item.category_name} authorId={item.author_id} author={item.author_username} verified={item.author_verified} admin={item.author_is_admin} options={item.options} initialResults={initialResults} initiallyFollowed={item.initially_followed} initiallyUpvoted={item.initially_upvoted} initialUpvoteCount={item.upvote_count} sponsoredBy={item.sponsored_by} headingLevel="h2" immersive />
   </div>;
 }

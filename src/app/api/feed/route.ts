@@ -4,6 +4,7 @@ import { getSessionContext } from "@/features/auth/authorization";
 import { decodeCursor, encodeCursor } from "@/features/feed/cursor";
 import { ALGORITHM_VERSION, categorySlugSchema, feedItemSchema, feedTypeSchema } from "@/features/feed/schema";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getAdminProfileIds } from "@/features/profile/admin-badge";
 import { buildRecommendationBlock, RECOMMENDATION_CONFIG } from "@/lib/recommendation";
 import { createFeedSession, getReservedPage, validateFeedSession } from "@/lib/recommendation/reservation";
 
@@ -31,7 +32,8 @@ export async function GET(request: Request) {
       page=await getReservedPage(admin,context.userId,session.id,offset);
     }
   }catch(error){console.warn("feed.recommendation_failed",{code:error instanceof Error?error.message.split(":")[0]:"unknown"});return NextResponse.json({message:"Le fil est momentanément indisponible."},{status:503});}
-  const items=page.map((row)=>feedItemSchema.parse({question_id:row.question_id,question_text:row.question_text,author_id:row.author_id,author_username:row.author_username,author_verified:row.author_verified,category_id:row.category_id,category_name:row.category_name,published_at:row.published_at,options:row.options,upvote_count:row.upvote_count,initially_followed:row.initially_followed,initially_upvoted:row.initially_upvoted,sponsored_by:row.sponsored_by}));
+  const adminProfileIds=await getAdminProfileIds(admin,page.map((row)=>row.author_id));
+  const items=page.map((row)=>feedItemSchema.parse({question_id:row.question_id,question_text:row.question_text,author_id:row.author_id,author_username:row.author_username,author_verified:row.author_verified,author_is_admin:adminProfileIds.has(row.author_id),category_id:row.category_id,category_name:row.category_name,published_at:row.published_at,options:row.options,upvote_count:row.upvote_count,initially_followed:row.initially_followed,initially_upvoted:row.initially_upvoted,sponsored_by:row.sponsored_by}));
   const nextCursor=items.length===RECOMMENDATION_CONFIG.pageSize?encodeCursor({version:ALGORITHM_VERSION,sessionId:session.id,snapshot:session.snapshot,offset:offset+items.length}):null;
   return NextResponse.json({items,nextCursor,requestId:session.id,sessionId:session.id,algorithmVersion:ALGORITHM_VERSION,...(performanceMs===undefined?{}:{generationMs:performanceMs}),...(debugTrace?{debug:debugTrace}:{})});
 }

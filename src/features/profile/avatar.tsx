@@ -15,12 +15,14 @@ export function ProfileAvatar({
   supabaseUrl,
   className,
   verified = false,
+  admin = false,
 }: {
   userId: string;
   username: string;
   supabaseUrl: string;
   className: string;
   verified?: boolean;
+  admin?: boolean;
 }) {
   const [failed, setFailed] = useState(false);
   const [version] = useState(() => Date.now());
@@ -32,6 +34,10 @@ export function ProfileAvatar({
       // eslint-disable-next-line @next/next/no-img-element
       <img src={getAvatarUrl(supabaseUrl, userId, version)} alt="" className="profile-avatar-image" onError={() => setFailed(true)} />
     ) : <span aria-hidden="true">{initial}</span>}
-    {verified ? <span className="feed-author-badge" aria-label="Profil vérifié">✓</span> : null}
+    {admin ? <span className="admin-avatar-badge" aria-label="Compte administrateur certifié">✓</span> : verified ? <span className="feed-author-badge" aria-label="Profil vérifié">✓</span> : null}
   </span>;
+}
+
+export function AdminNameBadge() {
+  return <span className="admin-name-badge" aria-label="Compte administrateur certifié"><span aria-hidden="true">✓</span> Certifié</span>;
 }
