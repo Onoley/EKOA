@@ -1,4 +1,0 @@
-- Le fichier complet sert de référence.
-- Le fichier core sert au moteur actif.
-- Le fichier extended sert uniquement à la surveillance.
-- Aucun JSON ne doit être importé côté client.

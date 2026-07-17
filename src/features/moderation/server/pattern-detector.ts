@@ -1,4 +1,0 @@
-import type{DetectedPattern,ModerationLexicon,ModerationSeverity}from"../schema";
-import type{NormalizedModerationText}from"./normalize-text";
-
-export function detectPatterns(text:NormalizedModerationText,lexicon:ModerationLexicon){const detected:DetectedPattern[]=[];for(const pattern of lexicon.patterns){const input=pattern.applies_to==="original_text"?text.normalized:text.accentInsensitive;const regex=new RegExp(pattern.regex,pattern.flags.join(""));const match=regex.exec(input);if(!match)continue;detected.push({patternId:pattern.id,slug:pattern.slug,matchedText:match[0],capturedGroups:match.slice(1).filter((group):group is string=>typeof group==="string"),start:match.index,end:match.index+match[0].length,severity:pattern.severity as ModerationSeverity,riskCategories:pattern.risk_categories,recommendedAction:pattern.recommended_action,targetType:pattern.target_type,priority:pattern.priority})}return detected.sort((a,b)=>b.severity-a.severity||a.start-b.start)}

@@ -175,22 +175,6 @@ button, input, select, textarea { font: inherit; }
 .admin-dashboard a strong { font-size: 1.35rem; line-height: 1; }
 .admin-dashboard a span { color: var(--muted); font-size: .73rem; font-weight: 750; }
 .admin-dashboard a:focus-visible { box-shadow: 0 0 0 3px #b9c8f5; }
-.moderation-tabs { display: flex; gap: .5rem; overflow-x: auto; padding-bottom: .25rem; scrollbar-width: none; }
-.moderation-tabs a { display: inline-flex; min-height: 2.75rem; flex: 0 0 auto; align-items: center; gap: .45rem; border: 1px solid var(--border); border-radius: 999px; padding: .55rem .85rem; font-size: .8rem; font-weight: 800; }
-.moderation-tabs a[aria-current="page"] { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
-.moderation-tabs a span { display: grid; min-width: 1.35rem; height: 1.35rem; place-items: center; border-radius: 999px; background: white; font-size: .7rem; }
-.moderation-review-card { border: 1px solid var(--border); border-radius: 1.5rem; padding: 1.1rem; box-shadow: 0 .45rem 1.5rem rgba(22,34,66,.06); }
-.moderation-priority { display: inline-flex; align-items: center; border-radius: 999px; padding: .35rem .65rem; font-size: .7rem; font-weight: 850; text-transform: uppercase; letter-spacing: .04em; }
-.moderation-priority.normal { background: #eef1f5; color: #4d5664; }
-.moderation-priority.high { background: #fff2cf; color: #805800; }
-.moderation-priority.urgent { background: #ffe0e3; color: #a01121; }
-.review-progress { display: grid; gap: .8rem; }
-.review-progress li { display: grid; grid-template-columns: 2rem 1fr; align-items: center; gap: .65rem; color: var(--muted); font-size: .85rem; font-weight: 700; }
-.review-progress li span { display: grid; width: 2rem; height: 2rem; place-items: center; border: 1px solid var(--border-strong); border-radius: 999px; background: white; }
-.review-progress li.complete, .review-progress li.current { color: var(--foreground); }
-.review-progress li.complete span { border-color: var(--accent); background: var(--accent); color: white; }
-.review-progress li.current span { border-color: var(--accent); color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
-@media (min-width: 640px) { .moderation-review-card { padding: 1.5rem; } }
 .avatar-cropper { border-top: 1px solid var(--border); padding-top: 1.25rem; }
 .avatar-crop-preview { width: min(64vw,15rem); aspect-ratio: 1; overflow: hidden; margin-inline: auto; border: 4px solid white; border-radius: 999px; background: var(--background); box-shadow: 0 0 0 1px var(--border-strong); }
 .avatar-crop-preview img { width: 100%; height: 100%; object-fit: cover; transform-origin: center; }

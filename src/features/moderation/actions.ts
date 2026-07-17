@@ -1,13 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { requireActiveProfile, requireAdmin, requireModerator } from "@/features/auth/authorization";
+import { requireAdmin, requireModerator } from "@/features/auth/authorization";
 import { logOperational } from "@/lib/observability/logger";
 import { consumeRateLimit } from "@/lib/rate-limit/rate-limit";
-import { createAdminClient } from "@/lib/supabase/admin";
-import { containsProhibitedContactDetails } from "@/features/questions/schema";
-import { automatedAdminDecisionSchema, directQuestionActionSchema, forbiddenTermSchema, moderationInputSchema, questionRevisionSchema, quickVerificationSchema, suspensionSchema, verificationSchema, type AutomatedModerationHistoryItem, type AutomatedModerationQueueItem, type MyModeratedQuestion } from "./schema";
-import { analyzeSubmissionContent, type SubmissionModerationAnalysis } from "./server/submission-analysis";
+import { directQuestionActionSchema, forbiddenTermSchema, moderationInputSchema, quickVerificationSchema, suspensionSchema, verificationSchema } from "./schema";
 
 export type ModerationState = { status: "idle" | "success" | "error"; message: string };
 
@@ -73,68 +70,4 @@ export async function setQuickVerification(_state: ModerationState,formData:Form
   const{error}=await supabase.rpc("admin_set_quick_verification",{requested_user_id:parsed.data.userId,requested_verified:parsed.data.verified});
   if(error)return{status:"error",message:"La certification n’a pas pu être modifiée."};
   revalidatePath("/admin");revalidatePath("/profil");return{status:"success",message:parsed.data.verified?"Compte certifié immédiatement.":"Certification retirée."};
-}
-
-export async function analyzeQuestionSubmission(text:string,options:string[]):Promise<SubmissionModerationAnalysis>{
- return analyzeSubmissionContent(text,options);
-}
-
-export async function getCurrentQuestionReviewStatus(){const{supabase}=await requireActiveProfile();const{data,error}=await supabase.rpc("get_current_question_review_status");if(error)throw new Error("question_review_status_unavailable");return Array.isArray(data)?data[0]??null:data??null}
-export async function getPendingModerationQueue(page=1,pageSize=25){const{supabase}=await requireAdmin();const safePage=Math.max(1,Math.trunc(page));const safeSize=Math.min(50,Math.max(1,Math.trunc(pageSize)));const{data,error}=await supabase.rpc("get_pending_automated_moderation_queue",{requested_limit:safeSize,requested_offset:(safePage-1)*safeSize});if(error)throw new Error("moderation_queue_unavailable");return data??[]}
-
-export async function getAutomatedModerationDashboard(tab:"pending"|"rewrite"|"urgent"){
- const{supabase}=await requireAdmin();
- const{data,error}=await supabase.rpc("get_automated_moderation_dashboard",{requested_tab:tab,requested_limit:100,requested_offset:0});
- if(error)throw new Error("automated_moderation_dashboard_unavailable");
- return(data??[])as AutomatedModerationQueueItem[];
-}
-
-export async function getAutomatedModerationHistory(){
- const{supabase}=await requireAdmin();
- const{data,error}=await supabase.rpc("get_automated_moderation_history",{requested_limit:100,requested_offset:0});
- if(error)throw new Error("automated_moderation_history_unavailable");
- return(data??[])as AutomatedModerationHistoryItem[];
-}
-
-export async function decideAutomatedQuestion(_state:ModerationState,formData:FormData):Promise<ModerationState>{
- const parsed=automatedAdminDecisionSchema.safeParse({
-  questionId:formData.get("questionId"),decision:formData.get("decision"),reason:formData.get("reason")??"",
-  warningLevel:formData.get("warningLevel")??0,text:formData.get("text")??undefined,
-  options:formData.getAll("options").map(String),
- });
- if(!parsed.success)return{status:"error",message:parsed.error.issues[0]?.message??"Décision invalide."};
- const{userId}=await requireAdmin();const limited=await adminLimit(userId);if(limited)return limited;
- const{error}=await createAdminClient().rpc("admin_decide_automated_question",{
-  requested_admin_id:userId,requested_question_id:parsed.data.questionId,requested_decision:parsed.data.decision,
-  requested_reason:parsed.data.reason,requested_text:parsed.data.text??null,
-  requested_options:parsed.data.decision==="approve_manual_edit"?parsed.data.options:null,
-  requested_warning_level:parsed.data.warningLevel,
- });
- if(error){
-  const message=error.message.includes("QUESTION_REVIEW_ALREADY_DECIDED")?"Cette question a déjà été traitée.":error.message.includes("suggested_rewrite_unavailable")?"Aucune réécriture suggérée n’est disponible.":"La décision n’a pas pu être enregistrée.";
-  return{status:"error",message};
- }
- revalidatePath("/admin");revalidatePath("/profil");revalidatePath("/fil");
- return{status:"success",message:parsed.data.decision==="request_rewrite"?"La réécriture a été demandée.":parsed.data.decision==="reject"?"La question a été refusée.":"La question a été validée et publiée."};
-}
-
-export async function getMyModeratedQuestion(){
- const{supabase}=await requireActiveProfile();const{data,error}=await supabase.rpc("get_my_moderated_question");
- if(error)throw new Error("my_moderated_question_unavailable");
- return(Array.isArray(data)?data[0]??null:data??null)as MyModeratedQuestion|null;
-}
-
-export async function resubmitQuestionRevision(_state:ModerationState,formData:FormData):Promise<ModerationState>{
- const parsed=questionRevisionSchema.safeParse({questionId:formData.get("questionId"),text:formData.get("text"),options:formData.getAll("options").map(String)});
- if(!parsed.success)return{status:"error",message:parsed.error.issues[0]?.message??"Vérifiez votre question."};
- if(containsProhibitedContactDetails(parsed.data.text)||parsed.data.options.some(containsProhibitedContactDetails))return{status:"error",message:"Les coordonnées et liens ne sont pas autorisés."};
- const{userId}=await requireActiveProfile();
- const analysis=await analyzeSubmissionContent(parsed.data.text,parsed.data.options);
- const{error}=await createAdminClient().rpc("resubmit_automated_question_revision",{
-  requested_user_id:userId,requested_question_id:parsed.data.questionId,requested_text:parsed.data.text,
-  requested_options:parsed.data.options,requested_moderation:analysis,
- });
- if(error)return{status:"error",message:error.message.includes("QUESTION_REVISION_UNAVAILABLE")?"Cette question ne peut plus être modifiée.":"La question n’a pas pu être renvoyée."};
- revalidatePath("/profil");revalidatePath("/admin");
- return{status:"success",message:"Votre question a été renvoyée à l’équipe Ekoa."};
 }
