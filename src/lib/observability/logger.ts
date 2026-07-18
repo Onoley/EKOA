@@ -5,7 +5,8 @@ import { getOperationsEnv } from "@/lib/config/env";
 type LogLevel = "info" | "warn" | "error";
 type OperationalEvent =
   | "auth.error" | "publication.error" | "vote.error" | "report.error"
-  | "event.error" | "admin.error" | "rate_limit.denied" | "maintenance.completed" | "maintenance.error";
+  | "event.error" | "admin.error" | "rate_limit.denied" | "maintenance.completed" | "maintenance.error"
+  | "comment.error" | "feed.error" | "discovery.error";
 
 type SafeContext = { scope?: string; code?: string; status?: number; count?: number; durationMs?: number };
 

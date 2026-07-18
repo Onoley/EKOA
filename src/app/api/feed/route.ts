@@ -7,6 +7,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { getAdminProfileIds } from "@/features/profile/admin-badge";
 import { buildRecommendationBlock, RECOMMENDATION_CONFIG } from "@/lib/recommendation";
 import { createFeedSession, getReservedPage, validateFeedSession } from "@/lib/recommendation/reservation";
+import { logOperational } from "@/lib/observability/logger";
 
 const querySchema = z.object({ type: feedTypeSchema.default("for_you"), category: categorySlugSchema.optional(), cursor: z.string().max(4096).optional(), debug:z.enum(["0","1"]).optional() });
 
@@ -31,7 +32,7 @@ export async function GET(request: Request) {
       performanceMs=result.durationMs;debugTrace=result.trace;
       page=await getReservedPage(admin,context.userId,session.id,offset);
     }
-  }catch(error){console.warn("feed.recommendation_failed",{code:error instanceof Error?error.message.split(":")[0]:"unknown"});return NextResponse.json({message:"Le fil est momentanément indisponible."},{status:503});}
+  }catch(error){logOperational("warn","feed.error",{scope:"recommendation",code:error instanceof Error?error.message.split(":")[0]:"unknown"});return NextResponse.json({message:"Le fil est momentanément indisponible."},{status:503});}
   const questionIds=page.map((row)=>row.question_id);const[adminProfileIds,featuredResult]=await Promise.all([getAdminProfileIds(admin,page.map((row)=>row.author_id)),questionIds.length?admin.from("questions").select("id").in("id",questionIds).gt("featured_until",new Date().toISOString()):Promise.resolve({data:[],error:null})]);
   if(featuredResult.error)return NextResponse.json({message:"Le fil est momentanément indisponible."},{status:503});
   const featuredIds=new Set((featuredResult.data??[]).map((row)=>row.id));

@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { decodeDiscoveryCursor, encodeDiscoveryCursor } from "./cursor";
 import { discoveryResultSchema, type DiscoveryResult } from "./schema";
 import { getActiveSponsorships } from "@/features/sponsorship/queries";
+import { logOperational } from "@/lib/observability/logger";
 
 const PAGE_SIZE = 12;
 type Input = { userId: string; mode: "search" | "recent" | "trending"; query?: string; category?: string; cursor?: string; limit?: number };
@@ -20,10 +21,10 @@ export async function discoverQuestions(input: Input): Promise<DiscoveryPage> {
     requested_user_id:input.userId,requested_mode:input.mode,requested_query:query || null,
     requested_category_slug:input.category ?? null,requested_snapshot:snapshot,requested_offset:offset,requested_limit:limit+1,
   });
-  if(error) {console.warn("discovery.query_failed",{code:error.code});return {items:[],nextCursor:null,error:"La recherche est momentanément indisponible."};}
+  if(error) {logOperational("warn","discovery.error",{scope:"query",code:error.code});return {items:[],nextCursor:null,error:"La recherche est momentanément indisponible."};}
   const baseSchema=discoveryResultSchema.omit({sponsored_by:true});const base=z.array(baseSchema).safeParse(data ?? []);
-  if(!base.success) {console.warn("discovery.response_invalid",base.error.issues.map(({code,path})=>({code,path})));return {items:[],nextCursor:null,error:"La recherche est momentanément indisponible."};}
-  let sponsorships:Map<string,string>;try{sponsorships=await getActiveSponsorships(base.data.map(item=>item.question_id));}catch{console.warn("discovery.sponsorships_failed");return{items:[],nextCursor:null,error:"La recherche est momentanément indisponible."}}
+  if(!base.success) {logOperational("warn","discovery.error",{scope:"response_invalid",count:base.error.issues.length});return {items:[],nextCursor:null,error:"La recherche est momentanément indisponible."};}
+  let sponsorships:Map<string,string>;try{sponsorships=await getActiveSponsorships(base.data.map(item=>item.question_id));}catch{logOperational("warn","discovery.error",{scope:"sponsorships"});return{items:[],nextCursor:null,error:"La recherche est momentanément indisponible."}}
   const parsed=z.array(discoveryResultSchema).safeParse(base.data.map(item=>({...item,sponsored_by:sponsorships.get(item.question_id)??null})));
   if(!parsed.success)return{items:[],nextCursor:null,error:"La recherche est momentanément indisponible."};
   const hasMore=parsed.data.length>limit;
