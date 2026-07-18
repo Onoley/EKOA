@@ -135,3 +135,9 @@ Tout membre actif publie immédiatement une question dès que sa structure et se
 Une question reste publique tant qu'un administrateur n'agit pas explicitement. Les signalements seuls ne modifient ni son statut ni sa visibilité. La file d'administration regroupe les signalements par question et n'affiche un groupe qu'à partir de trois signalements actifs provenant de trois membres distincts. Une décision porte sur la question et résout atomiquement tout le groupe de signalements actifs associé.
 
 Le nombre de signalements n'entre dans aucun score de classement, de recherche ou de tendance. Dans cette première version, les commentaires conservent leur traitement existant signalement par signalement; l'absence de regroupement et de seuil pour ces derniers est une limitation connue.
+
+## ADR-034 — Masquage automatique au-delà de 10 signalements actifs
+
+ADR-033 réserve tout changement de statut ou de visibilité à une décision explicite d'administrateur. Cette décision introduit une unique exception bornée : une question publiée passe automatiquement en `limited` (déjà invisible du public, visible de son auteur et des administrateurs) dès qu'elle atteint 10 signalements actifs provenant de 10 membres distincts — un seuil délibérément supérieur au seuil de 3 qui ne fait que regrouper une question dans la file d'administration. `submit_report` applique ce seuil directement, sans nouvelle table ni colonne.
+
+Une question qu'un administrateur a explicitement validée (`moderation_status = 'approved'`, via l'action de restauration de `moderate_report`) est exemptée : les signalements restent possibles mais ne redéclenchent plus jamais le masquage automatique. Le nombre de signalements continue de n'entrer dans aucun score de classement, de recherche ou de tendance, conformément à ADR-033.
